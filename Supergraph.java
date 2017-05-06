@@ -51,6 +51,7 @@ public class Supergraph
 		s = s.replace("~r-n","~removenodes");
 		s = s.replace("~ff","~fromfile");
 		s = s.replace("~ftf","~fromtextfile");
+		s = s.replace("~g-an","~getallnodes");
 		s = s.replace("~q-n","~nodequery");
 		s = s.replace("~q-c","~connectionquery");
 		s = s.replace("~q-p","~pathquery");
@@ -77,6 +78,8 @@ public class Supergraph
 		String commandinput = filterInput(input);
 		String[] command = commandinput.split(" ");
 		System.out.println("command: "+command[0]);
+		ArrayList<Node> lastqueryresults = graph.convertNamesToNodes(SavedQueryResults.get(lastresult));
+			
 		if(command.length == 0)
 			return false;
 		
@@ -127,7 +130,7 @@ public class Supergraph
 			}
 		if (command[0].equals("//removenodes"))	//Add a new node to the graph
 			{
-			graph.removeNodes(graph.getLastQueryResults());
+			graph.removeNodes(lastqueryresults);//graph.getLastQueryResults()
 			return true;
 			}
 				
@@ -188,7 +191,7 @@ public class Supergraph
 				String verb = 		command[3];
 				System.out.println("Adding group traffic...");
 				Node newNode = graph.getNode(Name1);
-				graph.addConnectionGroup(graph.getLastQueryResults(),newNode,traffic,verb,true);
+				graph.addConnectionGroup(lastqueryresults,newNode,traffic,verb,true);
 				return true;
 				}
 			}
@@ -201,7 +204,7 @@ public class Supergraph
 				String verb = 		command[3];
 				System.out.println("Adding group traffic reversed...");
 				Node newNode = graph.getNode(Name1);
-				graph.addConnectionGroup(graph.getLastQueryResults(),newNode,traffic,verb,false);
+				graph.addConnectionGroup(lastqueryresults,newNode,traffic,verb,false);
 				return true;
 				}
 			}		
@@ -212,7 +215,7 @@ public class Supergraph
 				String variablename 	= command[1];
 				String nodedata 		= command[2];
 				System.out.println("Adding node data:...");
-				graph.addNodeData(graph.getLastQueryResults(),variablename,nodedata,true);
+				graph.addNodeData(lastqueryresults,variablename,nodedata,true);
 				return true;
 				}
 			}
@@ -222,7 +225,7 @@ public class Supergraph
 				{
 				String variablename 	= command[1];
 				System.out.println("Removing node data:...");
-				graph.removeNodeData(graph.getLastQueryResults(),variablename);
+				graph.removeNodeData(lastqueryresults,variablename);
 				return true;
 				}
 			}		
@@ -233,28 +236,30 @@ public class Supergraph
 				String Name1 = 	command[1];
 				String Name2 = 	command[2];
 				System.out.println("Getting path over query between: "+Name1+" "+Name2+"...");
-				graph.runPathQuery(graph.getLastQueryResults(),Name1,Name2);
+				graph.runPathQuery(lastqueryresults,Name1,Name2);
 				return true;
 				}
 			}		
-		if (command[0].equals("~clearquery")) //Clears the query state of the graph
+		if (command[0].equals("~getallnodes")) //runs a nodequery on the initial graph and saves result to memory.
 			{
-			System.out.println("clearing results:...");
-			graph.resetQueryState();
+			System.out.println("Getting all nodes:...");
+			SavedQueryResults.put(lastresult,graph.getNodeNames(graph.getNodeArrayList()));
 			return true;
-			}					
+			}		
 		if (command[0].equals("~nodequery")) //runs a nodequery on the initial graph and saves result to memory.
 			{
 			System.out.println("Running node query:...");
 			String query = 	commandinput.substring(11);
-			graph.runNodeQuery(query);
+			SavedQueryResults.put(lastresult,graph.getNodeNames(graph.runNodeQuery(lastqueryresults,query)));
+			
 			return true;
 			}		
 		if (command[0].equals("~connectionquery")) //runs a nodequery on the initial graph and saves result to memory.
 			{
 			System.out.println("Running connection query:...");
 			String query = 	commandinput.substring(17);
-			graph.runConnectionQuery(query);
+			SavedQueryResults.put(lastresult,graph.getNodeNames(graph.runConnectionQuery(lastqueryresults,query)));
+			//graph.runConnectionQuery(query);
 			return true;
 			}		
 		if (command[0].equals("~writegraph")) //runs a nodequery on the initial graph and saves result to memory.
@@ -270,7 +275,7 @@ public class Supergraph
 			{
 			if(command.length > 1)
 				{
-				graph.writeNetwork(graph.getLastQueryResults(),command[1]);
+				graph.writeNetwork(lastqueryresults,command[1]);
 				return true;
 				}
 			}
@@ -279,14 +284,14 @@ public class Supergraph
 			if(command.length == 2)
 				{
 				System.out.println("Saving results to " + command[1]  +":...");
-				SavedQueryResults.put(command[1],graph.getNodeNames(graph.getLastQueryResults())); //gets results of last query, converts the nodes to a list of names, then saves it to input name
+				SavedQueryResults.put(command[1],graph.getNodeNames(lastqueryresults)); //gets results of last query, converts the nodes to a list of names, then saves it to input name
 				return true;
 				}
 			}
 		if (command[0].equals("~printresults")) //prints the results of a query
 			{
 			System.out.println("printing results:...");
-			graph.printLastQueryResult();
+			graph.printNetwork(lastqueryresults);
 			return true;
 			}
 		if (command[0].equals("~runfromfile")) //runs a nodequery on the initial graph and saves result to memory.

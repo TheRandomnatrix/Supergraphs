@@ -1,8 +1,9 @@
 ~a-n Alphabet A B C D E F G H I J K L M N O P Q R S T U V W X Y Z 1 2 3 4 5 6 7 8 9 10 11 12 13
+~g-an
 ~q-n ( LENGTH ( ::name ) == 1 )
 ~q-n NOT ( ISNUMERIC ( ::name ) )
 ~pr-r
 ~a-nd isLetter true
 ~a-cgr Alphabet 1 isLetter
 ~pr-n
-~w-g Letters.txt
+~w-g Results\\Letters.txt

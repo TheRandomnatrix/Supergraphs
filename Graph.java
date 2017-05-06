@@ -9,17 +9,14 @@ public class Graph
 {
 	private HashMap<String,Node> NametoNode;
 	private String Name = "";
-	private boolean clearedQuery; //false if the query should continue off of an old query result
-	private ArrayList<Node> queryResults;
+	//private boolean clearedQuery; //false if the query should continue off of an old query result
+	//private ArrayList<Node> queryResults;
 	
 	Graph(String name) //constructor
 		{
 		//NodeList = new ArrayList<Node>(); //list of neighbors
 		NametoNode = new HashMap<String,Node>();
 		this.Name = name;
-			
-		this.clearedQuery = true; //false if the query should continue off of an old query result
-		ArrayList<Node> queryResults =  new ArrayList<Node>();
 		}
 	
 		
@@ -27,17 +24,6 @@ public class Graph
 		{
 		return this.Name;
 		}
-		
-	public void resetQueryState()
-		{
-		queryResults.clear();
-		this.clearedQuery = true;	
-		}		
-		
-	public ArrayList<Node> getLastQueryResults()
-		{
-		return this.queryResults;
-		}		
 		
 	public Node getNode(String name)
 		{
@@ -230,7 +216,6 @@ public class Graph
 			Node node = nodeslist.get(i);
 			removeNode(node);
 			}
-		resetQueryState();
 		}
 	
 	public void addConnection(Node left,Node right,int traffic, String verb) //prints the network for all nodes in a specified list
@@ -337,59 +322,29 @@ public class Graph
 		{}
 	}
 	
-	public void printLastQueryResult()
-	{
-	if(this.queryResults.size() > 0)
-		{	
-		printNetwork(queryResults);
-		}
-	}
-	
-	
 	public ArrayList<Node> runConnectionQuery(String query) //Used for chaining queries. Runs a fresh query if meant to
 	{
-		if(clearedQuery)
-		{
-		return runConnectionQuery(getNodeArrayList(),query); //starts a fresh query from all nodes in the graph
-		}
-		else
-		{
-		return runConnectionQuery(this.queryResults,query); //resuses the results of an old query for chaining queries
-		}
+	return runConnectionQuery(getNodeArrayList(),query); //starts a fresh query from all nodes in the graph
 	}
 	
 	public ArrayList<Node> runConnectionQuery(ArrayList<Node> nodeList, String query) //runs a specified query on a group of nodes and returns the outbound nodes satisfying it
 		{
 		ArrayList<Connection> connectlist = getAllConnections(nodeList);
 		ConnectionQuery newquery = new ConnectionQuery(connectlist,query);
-			
-		this.clearedQuery = false;		//sets query state to old
-		this.queryResults = newquery.getNodeQuery();
-			
-		return queryResults;	
+
+		return newquery.getNodeQuery();	
 		//return newquery.getNodeQuery();	
 		}
 	
 	public ArrayList<Node> runNodeQuery(String query) //Used for chaining queries. Runs a fresh query if meant to
-	{
-		if(clearedQuery)
 		{
 		return runNodeQuery(getNodeArrayList(),query); //starts a fresh query from all nodes in the graph
 		}
-		else
-		{
-		return runNodeQuery(this.queryResults,query); //resuses the results of an old query for chaining queries
-		}
-	}
 		
 	public ArrayList<Node> runNodeQuery(ArrayList<Node> nodeList, String query) //runs a specified query on a group of nodes and returns the nodes satisfying it
 		{
 		NodeQuery newquery = new NodeQuery(nodeList,query);
-			
-		this.clearedQuery = false;	//sets query state to old
-		this.queryResults = newquery.getNodeQuery();
-		
-		return queryResults;	
+		return newquery.getNodeQuery();	
 		//return newquery.getNodeQuery();
 		}
 	
@@ -398,9 +353,7 @@ public class Graph
 		ArrayList<Node> outputlist = new ArrayList<Node>();
 		if ((startnode != null)&&(endnode != null)&&(nodeList.size() > 0))
 			{
-			this.clearedQuery = false;	//sets query state to old
 			outputlist = PathFinder.getPath(startnode,endnode,nodeList);
-			this.queryResults = outputlist;
 			}
 		return outputlist;	
 		}
