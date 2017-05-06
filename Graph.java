@@ -61,9 +61,9 @@ public class Graph
 		ArrayList<Node> nodeslist = new ArrayList<Node>(); //return list of nodes
 		for(int i=0; i < nameslist.size(); i++)
 			{
-			Node node = this.NametoNode(nameslist.get(i)); //convert the name to a node for each item in nameslist
+			Node node = this.NametoNode.get(nameslist.get(i)); //convert the name to a node for each item in nameslist
 			if(node != null)
-				nodeslist.add(output); //if the node exists in the graph, add it to the return list
+				nodeslist.add(node); //if the node exists in the graph, add it to the return list
 			}
 		return nodeslist;
 		}
