@@ -1,0 +1,19 @@
+9
+Set up sunderer
+Go to building,Data1,Data3
+Clear the point,Data1,Data3
+Capture the point,Data1,Data3
+Defend the point,Data1,Data3
+Lose the point
+Capture Base,Data1,Data3
+Move to next base
+Sunderer killed
+Set up sunderer,Go to building,2,a
+Go to building,Clear the point,10,a,Sunderer killed,2,a
+Clear the point,Capture the point,10,a,Sunderer killed,2,a
+Capture the point,Defend the point,10,a,Sunderer killed,2,a
+Defend the point,Lose the point,10,c,Capture Base,7,a,Sunderer killed,2,a
+Lose the point,Clear the point,10,a,Sunderer killed,2,a
+Capture Base,Move to next base,3,n
+Move to next base,Set up sunderer,12,b
+Sunderer killed,Set up sunderer,12,b

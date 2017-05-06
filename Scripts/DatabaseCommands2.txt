@@ -1,0 +1,6 @@
+/ff NodeData2.txt
+/pr-n
+/q-n true
+/q-p Name1 Name7
+/pr-r
+/w-r CiaphasResults.txt

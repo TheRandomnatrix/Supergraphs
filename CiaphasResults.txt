@@ -1,0 +1,11 @@
+5
+Name1,Data2,15,Data3,56,Data4,34,Data1,3000
+Name2,Data2,45,Data3,303,Data4,104,Data1,23
+Name5,Data2,17,Data3,87,Data4,4,Data1,30
+Name6,Data2,23,Data3,4,Data4,15,Data1,28
+Name7,Data2,42,Data3,19,Data4,34,Data1,13
+Name1,Name3,3,c,Name2,3,g
+Name2,Name1,2,g,Name3,3,d,Name5,3,d
+Name5,Name6,3,w
+Name6,Name4,12,w,Name6,8,i,Name7,3,d
+Name7,null

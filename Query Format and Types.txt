@@ -1,0 +1,26 @@
+A query maintains a list of pointers to connections. These connections already exist.
+
+It's initialized with a data set of connections. This is the input. Then the queries are run which narrows the list of connections down based on the query. 
+
+Additionally the query can generate a set of nodes from the list of connections. This allows for alternating between lists of connections, then getting nodes which contain their own full lists of connections, then narrowing the data down again.
+
+The query only exists long enough to do its job, which is being initialized with an input list, narrowing the list, then generating a list of nodes from that list. It does not stick around like graphs, nodes, and connections do.
+
+
+Narrowing connections: A connection must satisfy ALL criteria to be allowed
+
+(verb == "verbname")
+(verb IN verb1,verb2,verb3)
+(traffic == number1)
+(traffic != number1)
+(traffic >>  number1)
+(traffic >= number1)
+(traffic <<  number1)
+(traffic <= number1)
+(!())
+
+11   233   3
+(1 + ((2 + 3) + 4)
+
+11   2332   2
+(1 + ((5) + 4)

@@ -1,0 +1,43 @@
+Supergraphs are intended to be a general purpose data structure that does pretty much anything I need it to. It needs to be able to handle data both heirarchically as well as a normal graph/network that can be traversed. Additionally nodes automatically collect metadata on how often they're traversed, and how often from which node they're traveled to. Sections or whole copies of a graph can be instantiated and given their own properties. Supergraphs can be merged with other supergraphs. Subgraphs can be created to map out a process, using either aforementioned traversal probabilities, or given logic based on metadata or attached attributes(variables). I should also be able to treat instantiated subgraphs as their own nodes, similar to groups. subgraphs can be instantiated multiple times, whereas groups are defined as a single entity which can't be duplicated. instantiated subgraphs also have attributes tied to them.
+
+I want to be able to run searches on all nodes by checking for certain criteria.
+Need to be able to merge supergraphs.
+Read and save to files
+Create groups of nodes, and groups of groups, or hybrids
+Get the distance between two nodes
+
+
+
+Selection of nodes:
+Select by group(s)
+Select nodes by distance from a certain node or group
+Select by probability
+Select by name or substring of name
+Random selection
+Select by number of connections to other nodes(high/low traffic nodes)
+Select all nodes constituting the shortest path between two nodes
+
+group creation:
+After a selection is made, one just needs to create a group and preserve that selection.
+
+Commands:
+/clear			
+	clears the entire network
+/load <filename>		
+	loads the network from a specified file. File must be formatted
+/mine			
+	Data mines a text document and adds data to network
+/save <filename>		
+	Saves the network to specified file
+/walk <nodename> <count>
+	Performs a random walk for count number of iterations starting at node name
+/printnet
+	Prints the network contents
+/l <filename>
+	Alias of /load
+/s <filename>
+	Alias of /save
+/c
+	Alias of /clear
+/w <nodename> <count>
+	Alias of /walk
