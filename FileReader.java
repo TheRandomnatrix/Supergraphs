@@ -20,8 +20,15 @@ public class FileReader
 			Output.add(line);
 			}
         
-        System.out.println("Data file read successful...");
+        //System.out.println("Data file read successful...");
         inFile1.close();
 		return Output;
-		}	
+		}
+	public static void printLines(ArrayList<String> lines)
+		{
+		for(int i = 0; i < lines.size(); i++)
+			{
+			System.out.println(lines.get(i));
+			}
+		}
 	}

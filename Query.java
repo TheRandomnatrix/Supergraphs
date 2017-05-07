@@ -32,7 +32,7 @@ public int Levenshtein(String a, String b) //returns the Levenshtein distance be
         return costs[b.length()];
     }
 		
-public boolean isNumeric(String s) //Checks to see if a string contains all digits
+public static boolean isNumeric(String s) //Checks to see if a string contains all digits
 		{
 		/*if(!s.matches("[+-]?\\d+"))
 			System.out.println(s);*/
@@ -42,8 +42,54 @@ public boolean isNumeric(String s) //Checks to see if a string contains all digi
 		//return s.matches("-?\\d+"); //test
 		//return s.matches("\\d+"); //only works for ints
 		}
+public static int countSubstring(String str, String findStr)
+	{
+    int lastIndex = 0;
+    int count = 0;
 
-public String evaluate(ArrayList<String> params, String operand) //evalaute an expression containing an operator and at most 2 parameters 
+    while ((lastIndex = str.indexOf(findStr, lastIndex)) != -1) 
+		{
+        count++;
+        lastIndex += findStr.length() - 1;
+		}
+	return count;
+	}	
+
+public static String getSmallestString(ArrayList<String> params) //returns smallest string from list of strings
+	{
+	String smallest = "NULLRETURN";
+	if (params.size() > 0)
+		{
+		smallest = params.get(0);
+		for (int i = 1; i < params.size(); i++)
+			{
+			if (smallest.length() > params.get(i).length())
+				{
+				smallest =  params.get(i);
+				}
+			}
+		}
+	return smallest;
+	}
+	
+public static String getLargestString(ArrayList<String> params) //returns largest string from list of strings
+	{
+	String largest = "NULLRETURN";
+	if (params.size() > 0)
+		{
+		largest = params.get(0);
+		for (int i = 1; i < params.size(); i++)
+			{
+			if (largest.length() < params.get(i).length())
+				{
+				largest =  params.get(i);
+				}
+			}
+		}
+	return largest;
+	}
+	
+public static String evaluate(ArrayList<String> params, String operand) //evalaute an expression containing an operator and at most 2 parameters 
 	{
 	//System.out.println("params: "+params + " "+operand);
 	if(operand.equals("MAX")) //Levenshtein distance of left and right strings
@@ -115,6 +161,14 @@ public String evaluate(ArrayList<String> params, String operand) //evalaute an e
 				}
 			}
 		}
+	if(operand.equals("LARGEST")) //Levenshtein distance of left and right strings
+		{
+		return getLargestString(params);
+		}
+	if(operand.equals("SMALLEST")) //Levenshtein distance of left and right strings
+		{
+		return getSmallestString(params);
+		}
 	if(operand.equals("STRREPLACE")) //Levenshtein distance of left and right strings
 		{
 		if (params.size() == 3)
@@ -126,7 +180,7 @@ public String evaluate(ArrayList<String> params, String operand) //evalaute an e
 			return replacedStr;
 			}
 		}
-	return "";
+	return "NULLRETURN";
 	}
 		
 public String evaluate(String leftString, String operand, String rightString) //evalaute an expression containing an operator and at most 2 parameters 
@@ -230,6 +284,19 @@ public String evaluate(String leftString, String operand, String rightString) //
 					return "NULLRETURN"; //not both numerics
 					}
 				}
+			if(operand.equals("RANDOMVAL"))	//returns square root of left, as an int
+				{
+				if (isNumeric(leftString)) //numerics
+					{
+					int leftnum = Integer.parseInt(leftString);
+					return String.valueOf((int) (Math.random() * leftnum));
+					}
+				else
+					{
+					return "NULLRETURN"; //not both numerics
+					}
+				}
+			
 			if(operand.equals("LENGTH")) //Returns length of given string
 			{
 				return String.valueOf(leftString.length()); //answer converted to string
@@ -459,6 +526,10 @@ public String evaluate(String leftString, String operand, String rightString) //
 					return "NULLRETURN"; //not both numerics
 					}
 				}
+			if(operand.equals("STRCOUNT"))
+				{
+				return String.valueOf(countSubstring(leftString,rightString));
+				}
 			
 		return "NULLRETURN"; //fail state returns empty string
 		}
@@ -625,6 +696,7 @@ public String parseString(String inputString) //Evaluates an infix expression an
 				case "<=":
 				case ">=":
 				case "LEVEN":
+				case "STRCOUNT":
 					{	
 					operation.add(inputs[i]);
 					operationtype.add(2);
@@ -638,6 +710,8 @@ public String parseString(String inputString) //Evaluates an infix expression an
 				{
 				case "MIN":
 				case "MAX":
+				case "SMALLEST":
+				case "LARGEST":
 				case "CHOOSE":
 				case "AVG":
 				case "STRREPLACE":

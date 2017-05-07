@@ -1,0 +1,30 @@
+Welcome to the Supergraph program. This program is designed to create and manage a graph database.
+
+Commands:
+~help (topic)	: gets help on a command or topic
+~printresults	: prints formatted results of last query
+~printnetwork	: prints formatted entire network
+~printallconnections	:
+~clearconnections
+~clearquery
+~addnodedata
+~addnode
+~addconnectiongroupreversed
+~addconnectiongroup
+~addconnection
+~addtraffic
+~removenodedata
+~removenodes
+~fromfile
+~fromtextfile
+~getallnodes
+~nodequery
+~connectionquery
+~pathquery
+~runfromfile
+~loadresults
+~saveresults
+~writegraph
+~help
+~writeresults
+~join

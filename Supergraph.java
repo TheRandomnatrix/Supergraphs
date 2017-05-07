@@ -59,6 +59,7 @@ public class Supergraph
 		s = s.replace("~l-r","~loadresults");
 		s = s.replace("~s-r","~saveresults");
 		s = s.replace("~w-g","~writegraph");
+		s = s.replace("~OMGPLSTOHALP","~help");
 		s = s.replace("~w-r","~writeresults");
 		s = s.replace("~j","~join");
 		//s = s.replace("/pr","/printresults");	
@@ -142,7 +143,8 @@ public class Supergraph
 				{
 				if(command.length > 1)
 					{
-					String filename = command[1];
+					String filename = 	commandinput.substring(10);
+					//String filename = command[1];
 					System.out.println("Creating from file: "+filename+"...");
 					graph.graphFromFile(filename);
 					return true;
@@ -351,6 +353,17 @@ public class Supergraph
 				System.out.println("Writing to file: "+command[1]+"...");
 				graph.writeNetwork(lastqueryresults,command[1]);
 				return true;
+				}
+			}
+		if (command[0].equals("~help")) //loads specified results list into lastresult
+			{
+			if(command.length == 1)
+				{
+				FileReader.printLines(FileReader.getFileLines("Documentation\\General Help.txt"));
+				}
+			if(command.length == 2)
+				{
+					
 				}
 			}
 		if (command[0].equals("~loadresults")) //loads specified results list into lastresult
