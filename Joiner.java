@@ -5,27 +5,36 @@ import java.util.List;
 public class Joiner
 	{
 
-	public static ArrayList<Node> getFullJoin(ArrayList<Node> leftnodeslist, ArrayList<Node> rightnodeslist) //return all nodes between the two lists
-		{
-		ArrayList<Node> outputlist = leftnodeslist;
+	
 		
+	public static ArrayList<String> getFullJoin(ArrayList<String> leftnodeslist, ArrayList<String> rightnodeslist) //return all nodes between the two lists
+		{
+		//System.out.println("FULL:");
+		//System.out.println(leftnodeslist);
+		//System.out.println(rightnodeslist);
+		ArrayList<String> outputlist = leftnodeslist;
 		for(int i=0; i < rightnodeslist.size(); i++) //get all nodes from right list that aren't in left list
 			{
-			Node node = rightnodeslist.get(i);
+			String node = rightnodeslist.get(i);
 			if (!leftnodeslist.contains(node))
 				{
 				outputlist.add(node);
 				}
 			}
+		//System.out.println(outputlist);
 		return outputlist;
 		}	
+	
 		
-	public static ArrayList<Node> getOuterJoin(ArrayList<Node> leftnodeslist, ArrayList<Node> rightnodeslist) //return all nodes not shared between the two lists
+	public static ArrayList<String> getOuterJoin(ArrayList<String> leftnodeslist, ArrayList<String> rightnodeslist) //return all nodes not shared between the two lists
 		{
-		ArrayList<Node> outputlist = new ArrayList<Node>();
+		//System.out.println("OUTER:");
+		//System.out.println(leftnodeslist);
+		//System.out.println(rightnodeslist);
+		ArrayList<String> outputlist = new ArrayList<String>();
 		for(int i=0; i < leftnodeslist.size(); i++)	//get all nodes from left list that aren't in right list
 			{
-			Node node = leftnodeslist.get(i);
+			String node = leftnodeslist.get(i);
 			if (!rightnodeslist.contains(node))
 				{
 				outputlist.add(node);
@@ -34,40 +43,50 @@ public class Joiner
 		
 		for(int i=0; i < rightnodeslist.size(); i++) //get all nodes from right list that aren't in left list
 			{
-			Node node = rightnodeslist.get(i);
+			String node = rightnodeslist.get(i);
 			if (!leftnodeslist.contains(node))
 				{
 				outputlist.add(node);
 				}
 			}
+		//System.out.println(outputlist);
 		return outputlist;
 		}
 	
-	public static ArrayList<Node> getLeftOuterJoin(ArrayList<Node> leftnodeslist, ArrayList<Node> rightnodeslist) //return all nodes in left list that are not shared between the two lists
+	public static ArrayList<String> getLeftOuterJoin(ArrayList<String> leftnodeslist, ArrayList<String> rightnodeslist) //return all nodes in left list that are not shared between the two lists
 		{
-		ArrayList<Node> outputlist = new ArrayList<Node>();
+		//System.out.println("LEFT:");
+		//System.out.println(leftnodeslist);
+		//System.out.println(rightnodeslist);
+		ArrayList<String> outputlist = new ArrayList<String>();
 		for(int i=0; i < leftnodeslist.size(); i++)	//get all nodes from left list that aren't in right list
 			{
-			Node node = leftnodeslist.get(i);
+			String node = leftnodeslist.get(i);
 			if (!rightnodeslist.contains(node))
 				{
 				outputlist.add(node);
 				}
 			}
+		//System.out.println(outputlist);
 		return outputlist;
 		}
-		
-	public static ArrayList<Node> getInnerJoin(ArrayList<Node> leftnodeslist, ArrayList<Node> rightnodeslist) //returns all nodes shared between the two lists
+
+	
+	public static ArrayList<String> getInnerJoin(ArrayList<String> leftnodeslist, ArrayList<String> rightnodeslist) //returns all nodes shared between the two lists
 		{
-		ArrayList<Node> outputlist = new ArrayList<Node>();
+		//System.out.println("INNER:");
+		//System.out.println(leftnodeslist);
+		//System.out.println(rightnodeslist);
+		ArrayList<String> outputlist = new ArrayList<String>();
 		for(int i=0; i < leftnodeslist.size(); i++)	//get all nodes from left list that are in right list
 			{
-			Node node = leftnodeslist.get(i);
+			String node = leftnodeslist.get(i);
 			if (rightnodeslist.contains(node))
 				{
 				outputlist.add(node);
 				}
 			}
+		//System.out.println(outputlist);
 		return outputlist;
 		}
 	}

@@ -56,8 +56,11 @@ public class Supergraph
 		s = s.replace("~q-c","~connectionquery");
 		s = s.replace("~q-p","~pathquery");
 		s = s.replace("~run","~runfromfile");
+		s = s.replace("~l-r","~loadresults");
+		s = s.replace("~s-r","~saveresults");
 		s = s.replace("~w-g","~writegraph");
 		s = s.replace("~w-r","~writeresults");
+		s = s.replace("~j","~join");
 		//s = s.replace("/pr","/printresults");	
 		return s;
 		}
@@ -77,7 +80,7 @@ public class Supergraph
 		{
 		String commandinput = filterInput(input);
 		String[] command = commandinput.split(" ");
-		System.out.println("command: "+command[0]);
+		//System.out.println("command: "+command[0]);
 		ArrayList<Node> lastqueryresults = graph.convertNamesToNodes(SavedQueryResults.get(lastresult));
 			
 		if(command.length == 0)
@@ -245,7 +248,77 @@ public class Supergraph
 			System.out.println("Getting all nodes:...");
 			SavedQueryResults.put(lastresult,graph.getNodeNames(graph.getNodeArrayList()));
 			return true;
-			}		
+			}
+		if (command[0].equals("~join")) //runs a nodequery on the initial graph and saves result to memory.
+			{
+			if(command.length == 4)
+				{
+				ArrayList<String> leftlist = (ArrayList<String>)SavedQueryResults.get(command[2]).clone();
+					//System.out.println(leftlist);
+				ArrayList<String> rightlist = (ArrayList<String>)SavedQueryResults.get(command[3]).clone();
+					//System.out.println(rightlist);
+				if((leftlist != null) && (rightlist != null))
+					{
+					ArrayList<String> R = SavedQueryResults.get(lastresult);
+					R.clear();
+					switch (command[1]) 		//get the join type
+						{
+						case "inner":
+							System.out.println("Combining nodes:...");
+							SavedQueryResults.put(lastresult,Joiner.getInnerJoin(leftlist,rightlist));
+							break;
+						case "full":
+							System.out.println("Combining nodes:...");
+							SavedQueryResults.put(lastresult,Joiner.getFullJoin(leftlist,rightlist));
+							break;
+						case "left":
+							System.out.println("Combining nodes:...");
+							SavedQueryResults.put(lastresult,Joiner.getLeftOuterJoin(leftlist,rightlist));
+							break;
+						case "outer":
+							System.out.println("Combining nodes:...");
+							SavedQueryResults.put(lastresult,Joiner.getOuterJoin(leftlist,rightlist));
+							break;
+						default:
+						} 
+					return true;
+					}
+				}
+			if(command.length == 5)
+				{
+				ArrayList<String> leftlist = (ArrayList<String>)SavedQueryResults.get(command[2]).clone();
+					//System.out.println(leftlist);
+				ArrayList<String> rightlist = (ArrayList<String>)SavedQueryResults.get(command[3]).clone();
+					//System.out.println(rightlist);
+				if((leftlist != null) && (rightlist != null))
+					{
+					ArrayList<String> R = SavedQueryResults.get(lastresult);
+					R.clear();
+					switch (command[1]) 		//get the join type
+						{
+						case "inner":
+							System.out.println("Combining nodes:...");
+							SavedQueryResults.put(command[4],Joiner.getInnerJoin(leftlist,rightlist));
+							break;
+						case "full":
+							System.out.println("Combining nodes:...");
+							SavedQueryResults.put(command[4],Joiner.getFullJoin(leftlist,rightlist));
+							break;
+						case "left":
+							System.out.println("Combining nodes:...");
+							SavedQueryResults.put(command[4],Joiner.getLeftOuterJoin(leftlist,rightlist));
+							break;
+						case "outer":
+							System.out.println("Combining nodes:...");
+							SavedQueryResults.put(command[4],Joiner.getOuterJoin(leftlist,rightlist));
+							break;
+						default:
+						} 
+					return true;
+					}
+				}
+			}
+	
 		if (command[0].equals("~nodequery")) //runs a nodequery on the initial graph and saves result to memory.
 			{
 			System.out.println("Running node query:...");
@@ -275,8 +348,23 @@ public class Supergraph
 			{
 			if(command.length > 1)
 				{
+				System.out.println("Writing to file: "+command[1]+"...");
 				graph.writeNetwork(lastqueryresults,command[1]);
 				return true;
+				}
+			}
+		if (command[0].equals("~loadresults")) //loads specified results list into lastresult
+			{
+			if(command.length == 2)
+				{
+				ArrayList<String> nameslist = SavedQueryResults.get(command[1]);
+				if(nameslist != null)
+					{
+					System.out.println("Loading results from " + command[1]  +":...");
+					
+					SavedQueryResults.put(lastresult,nameslist); //moves list of results into last results
+					return true;
+					}
 				}
 			}
 		if (command[0].equals("~saveresults")) //runs a nodequery on the initial graph and saves result to memory.
@@ -284,7 +372,7 @@ public class Supergraph
 			if(command.length == 2)
 				{
 				System.out.println("Saving results to " + command[1]  +":...");
-				SavedQueryResults.put(command[1],graph.getNodeNames(lastqueryresults)); //gets results of last query, converts the nodes to a list of names, then saves it to input name
+				SavedQueryResults.put(command[1],(ArrayList<String>)graph.getNodeNames(lastqueryresults).clone()); //gets results of last query, converts the nodes to a list of names, then saves it to input name
 				return true;
 				}
 			}

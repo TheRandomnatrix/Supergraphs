@@ -105,7 +105,7 @@ public class Driver
 	input = sc.nextLine();
 	}*/
 	
-	supergraph.runCommand("~run "+"Scripts\\DatabaseCommands.txt",graph,false); //
+	supergraph.runCommand("~run "+"Scripts\\DatabaseCommands3.txt",graph,false); //
 	
 	/*supergraph.runCommand("/fromfile "+datafilename,graph);
 	//supergraph.runCommand("/pr-n",graph);
