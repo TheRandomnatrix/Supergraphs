@@ -1,20 +1,47 @@
 Welcome to the Supergraph program. This program is designed to create and manage a graph database.
 
 Commands:
-~help (topic)	: gets help on a command or topic
-~printresults	: prints formatted results of last query
-~printnetwork	: prints formatted entire network
-~printallconnections	:
-~clearconnections
-~clearquery
-~addnodedata
-~addnode
-~addconnectiongroupreversed
-~addconnectiongroup
-~addconnection
+~help (topic) : 
+gets help on a command or topic. Returns this file if nothing specified
+
+~printresults : 
+prints formatted results of last query
+
+~printnetwork : 
+prints formatted entire network
+
+~printallconnections : 
+prints all connections
+
+~clearconnections : 
+clears all connections from most recent query
+
+~addnodedata [DataName] [Value] : 
+Adds data with value
+
+~addnode [Name1] (Name2)...	: 
+Makes a node with specified name and adds it to graph if one with the same name does not exist. 
+Creates multiple nodes if more than one is given
+
+~addconnectiongroupreversed [Name] [connectionvalue] [connectionname] : 
+Adds connections from all nodes in last query to specified node
+
+~addconnectiongroup [Name] [connectionvalue] [connectionname] : 
+Adds connections from specified node to all nodes in last query
+
+~addconnection :
+
 ~addtraffic
-~removenodedata
-~removenodes
+
+~removenodedata [DataName] :
+Removes node data from all nodes in query results with the name DataName, if it exists.
+
+~removenodes		: 
+removes nodes from last query result
+
+~removenode [Name]	: 
+Removes node specified by Name, if it exists within graph
+
 ~fromfile
 ~fromtextfile
 ~getallnodes
@@ -22,9 +49,9 @@ Commands:
 ~connectionquery
 ~pathquery
 ~runfromfile
-~loadresults
-~saveresults
-~writegraph
+~loadresults [ResultName]	: loads the results if it exists in runtime memory, and makes it recent query result 
+~saveresults	: Saves query into list of results
+~writegraph [Filename.txt] : Writes the entire graph to a formatted file
 ~help
-~writeresults
+~writeresults	:
 ~join

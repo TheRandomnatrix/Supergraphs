@@ -40,7 +40,6 @@ public class Supergraph
 		s = s.replace("~pr-n","~printnetwork");
 		s = s.replace("~pr-ac","~printallconnections");
 		s = s.replace("~c-c","~clearconnections");
-		s = s.replace("~c-q","~clearquery");
 		s = s.replace("~a-nd","~addnodedata");
 		s = s.replace("~a-n","~addnode");
 		s = s.replace("~a-cgr","~addconnectiongroupreversed");
@@ -132,7 +131,7 @@ public class Supergraph
 				return true;
 				}
 			}
-		if (command[0].equals("//removenodes"))	//Add a new node to the graph
+		if (command[0].equals("~removenodes"))	//Add a new node to the graph
 			{
 			graph.removeNodes(lastqueryresults);//graph.getLastQueryResults()
 			return true;

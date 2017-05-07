@@ -301,6 +301,14 @@ public String evaluate(String leftString, String operand, String rightString) //
 			{
 				return String.valueOf(leftString.length()); //answer converted to string
 			}
+			if(operand.equals("UPPER")) //Returns length of given string
+			{
+				return leftString.toUpperCase(); //answer converted to string
+			}
+			if(operand.equals("LOWER")) //Returns length of given string
+			{
+				return leftString.toLowerCase(); //answer converted to string
+			}
 			if(operand.equals("+"))	//returns sum of left and right
 				{
 				if (isNumeric(leftString) && isNumeric(rightString)) //both numerics
@@ -668,6 +676,8 @@ public String parseString(String inputString) //Evaluates an infix expression an
 				case "NOT":
 				case "ISNUMERIC":
 				case "LENGTH":
+				case "UPPER":
+				case "LOWER":
 					{	
 					//System.out.print(inputs[i]);
 					operation.add(inputs[i]);
