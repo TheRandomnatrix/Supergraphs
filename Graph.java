@@ -343,9 +343,18 @@ public class Graph
 		
 	public ArrayList<Node> runNodeQuery(ArrayList<Node> nodeList, String query) //runs a specified query on a group of nodes and returns the nodes satisfying it
 		{
-		NodeQuery newquery = new NodeQuery(nodeList,query);
-		return newquery.getNodeQuery();	
+		return NodeQuery.evaluateNodes(nodeList,query);	
 		//return newquery.getNodeQuery();
+		}
+		
+	public void runNodeComputation(String varname, String query) //Used for chaining queries. Runs a fresh query if meant to
+		{
+		runNodeComputation(getNodeArrayList(),varname,query); //starts a fresh query from all nodes in the graph
+		}
+		
+	public void runNodeComputation(ArrayList<Node> nodeList, String varname, String query) //runs a specified query on a group of nodes and returns the nodes satisfying it
+		{
+		NodeQuery.computeNodeData(nodeList,varname,query);	
 		}
 	
 	public ArrayList<Node> runPathQuery(ArrayList<Node> nodeList, Node startnode, Node endnode) //runs a query getting the shortest path between two nodes

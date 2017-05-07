@@ -6,34 +6,13 @@ import java.io.FileNotFoundException;
 
 public class NodeQuery extends Query
 	{
-	private ArrayList<Node> NodeList;
-	private String query;
-	private final String variabletag = "::";
-	
-NodeQuery(ArrayList<Node> NodeList, String query) //constructor
-	{
-	this.NodeList = NodeList;
-	this.query = query;
-	}
+	private static final String variabletag = "::";
 
-public ArrayList<Node> getNodeQuery() 
-	{
-	/*//This method evaluates every connection in the constructor with the constructor query
-		and returns the list of all destination nodes from all valid connections
-		
-		*/
-	//System.out.println(ConnectionList);
-	ArrayList<Node> nodelist = evaluateNodes(); //narrow list of nodes down
-	//System.out.println(connectList);
-	return nodelist;
-	}
-
-private String filterQueryParams(Node node, String rawquery) //returns string replacing keywords with their actual values from a connection
+private static String filterQueryParams(Node node, String rawquery) //returns string replacing keywords with their actual values from a connection
 	{
 		String q = rawquery;
 		
 		q = q.replaceAll(variabletag+"name",node.getName()); //replaces "name" with node's name
-		
 		q = q.replaceAll(variabletag+"RANDOMNUM",String.valueOf((int) (Math.random() * 100000))); //replaces randomnum with random number
 		
 		String[] dataList = node.getNodeData().keySet().toArray(new String[0]); //returns list of variables in the node
@@ -45,13 +24,13 @@ private String filterQueryParams(Node node, String rawquery) //returns string re
 		return q;
 	}
 	
-private ArrayList<Node> evaluateNodes()
+public static ArrayList<Node> evaluateNodes(ArrayList<Node> NodeList,String query)
 	{
 	ArrayList<Node> returnList = new ArrayList<Node>();
 	for (int i = 0; i < NodeList.size(); i++)
 		{
 		Node node = NodeList.get(i);
-		String q = filterQueryParams(node,this.query);
+		String q = filterQueryParams(node,query);
 		if(q.indexOf(variabletag)==-1)	//checks to see if any variables were not properly replaced with their true value. Will be an invalid expression
 			{
 			if(parseString(q).equals("true")) //parse the query looking for a successful return
@@ -62,6 +41,23 @@ private ArrayList<Node> evaluateNodes()
 		}
 	return returnList;
 	}
+	
+	public static void computeNodeData(ArrayList<Node> nodeslist, String varname,String query) //computes and sets variables
+		{
+		for (int i = 0; i < nodeslist.size(); i++)
+			{
+			Node node = nodeslist.get(i);
+			String q = filterQueryParams(node,query);
+			if(q.indexOf(variabletag)==-1)	//checks to see if any variables were not properly replaced with their true value. Will be an invalid expression
+				{
+				String evaluatedstring = parseString(q);
+				if(!evaluatedstring.equals("NULLRETURN")) //parse the query looking for a successful return
+					{
+					node.addNodeData(varname, evaluatedstring,true);
+					}
+				}
+			}
+		}
 		
 	
 	}

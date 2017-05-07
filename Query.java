@@ -9,7 +9,7 @@ public class Query
 	private ArrayList<Connection> ConnectionList;
 	private String query;
 
-public int Levenshtein(String a, String b) //returns the Levenshtein distance between two strings
+public static int Levenshtein(String a, String b) //returns the Levenshtein distance between two strings
 		{
 		//NOT MY CODE.
         a = a.toLowerCase();
@@ -183,7 +183,7 @@ public static String evaluate(ArrayList<String> params, String operand) //evalau
 	return "NULLRETURN";
 	}
 		
-public String evaluate(String leftString, String operand, String rightString) //evalaute an expression containing an operator and at most 2 parameters 
+public static String evaluate(String leftString, String operand, String rightString) //evalaute an expression containing an operator and at most 2 parameters 
 		{
 			if (leftString.equals("NULLRETURN") || rightString.equals("NULLRETURN")) //invalid params
 				{
@@ -542,7 +542,7 @@ public String evaluate(String leftString, String operand, String rightString) //
 		return "NULLRETURN"; //fail state returns empty string
 		}
 		
-public String parseString(String inputString) //Evaluates an infix expression and returns a string containing the answer
+public static String parseString(String inputString) //Evaluates an infix expression and returns a string containing the answer
 		{
 		/* 
 		Note that all parameters and operations are space seperated

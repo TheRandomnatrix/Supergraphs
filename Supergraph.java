@@ -40,6 +40,7 @@ public class Supergraph
 		s = s.replace("~pr-n","~printnetwork");
 		s = s.replace("~pr-ac","~printallconnections");
 		s = s.replace("~c-c","~clearconnections");
+		s = s.replace("~cu-nd","~computenodedata");
 		s = s.replace("~a-nd","~addnodedata");
 		s = s.replace("~a-n","~addnode");
 		s = s.replace("~a-cgr","~addconnectiongroupreversed");
@@ -212,14 +213,22 @@ public class Supergraph
 				return true;
 				}
 			}		
-		if (command[0].equals("~addnodedata")) //addTraffic Name1 Name2 traffic verb
+		if (command[0].equals("~addnodedata")) //adds node data to last query nodes. Overrides data unless otherwise specified
 			{
 			if(command.length >= 3)
 				{
 				String variablename 	= command[1];
 				String nodedata 		= command[2];
+				boolean override = true;	//overrides node data by default
+				if(command.length >= 4) 
+					{
+					if (command[3].equals("false") || command[3].equals("f")) //check if override to false
+						{
+						override = false;
+						}
+					}
 				System.out.println("Adding node data:...");
-				graph.addNodeData(lastqueryresults,variablename,nodedata,true);
+				graph.addNodeData(lastqueryresults,variablename,nodedata,override);
 				return true;
 				}
 			}
@@ -319,7 +328,18 @@ public class Supergraph
 					}
 				}
 			}
-	
+		if (command[0].equals("~computenodedata")) //Runs through nodes from last query and computes the value of a given expression, putting the result into each node
+			{
+			if(command.length >= 3)
+				{
+				String commandlength = command[0] + " " + command[1] + " ";
+				String query = 	commandinput.substring(commandlength.length());
+				System.out.println("Setting node data to: "+ command[1] + " = " + query +":...");
+				graph.runNodeComputation(lastqueryresults,command[1],query);
+				
+				return true;
+				}
+			}			
 		if (command[0].equals("~nodequery")) //runs a nodequery on the initial graph and saves result to memory.
 			{
 			System.out.println("Running node query:...");

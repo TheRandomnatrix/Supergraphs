@@ -1,2 +1,7 @@
 ~ff Input Files\\NodeData2.txt
+~g-an
+~q-n LENGTH ( ::name ) == 5
+~pr-r
+~q-n ::name == Name3
+~pr-r
 ~pr-n
