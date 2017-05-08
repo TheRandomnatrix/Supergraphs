@@ -59,5 +59,23 @@ public static ArrayList<Node> evaluateNodes(ArrayList<Node> NodeList,String quer
 			}
 		}
 		
+	public static ArrayList<String> computeDataSet(ArrayList<Node> nodeslist, String query) //computes a set of 
+		{
+		
+		for (int i = 0; i < nodeslist.size(); i++)
+			{
+			Node node = nodeslist.get(i);
+			String q = filterQueryParams(node,query);
+			if(q.indexOf(variabletag)==-1)	//checks to see if any variables were not properly replaced with their true value. Will be an invalid expression
+				{
+				String evaluatedstring = parseString(q);
+				if(!evaluatedstring.equals("NULLRETURN")) //parse the query looking for a successful return
+					{
+					node.addNodeData(varname, evaluatedstring,true);
+					}
+				}
+			}
+		}
+		
 	
 	}
