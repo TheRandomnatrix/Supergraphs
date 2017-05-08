@@ -20,6 +20,7 @@ public class Supergraph
 	private HashMap<String,ArrayList<String>> SavedQueryResults; //holds lists of names of nodes for loading/unloading from files
 	private HashMap<String,ArrayList<String>> SavedComputationResults; //holds lists of names of nodes for loading/unloading from files
 	private String lastresult;
+	private static final String SetTag = "##";
 	//private ArrayList<Graph> queryResults;
 	Supergraph() //constructor
 		{
@@ -36,6 +37,28 @@ public class Supergraph
 		NametoGraph.put(graph.getName(),graph);
 		}
 	
+	private String filterQuerySets(String rawquery) //returns string replacing keywords with their actual values from
+		{
+		String q = rawquery;
+		
+		String[] dataList = this.SavedComputationResults.keySet().toArray(new String[0]); //returns list of variables in the node
+		for(int i = 0; i < dataList.length; i++) //iterate through query, replacing all variables with their actual value if it exists
+			{
+			ArrayList<String> set = this.SavedComputationResults.get(dataList[i]);
+			String str = "";
+			for(int k = 0; k < set.size(); k++) //iterate through query, replacing all variables with their actual value if it exists
+				{
+				str += set.get(k);
+				if(k != (set.size()-1))
+					{
+					str += " ";
+					}
+				}
+			q = q.replaceAll(SetTag+dataList[i],str);
+			}
+		return q;
+		}
+		
 	public static String filterInput(String input)
 		{
 		String s = input;
@@ -45,6 +68,7 @@ public class Supergraph
 		s = s.replace("~c-c","~clearconnections");
 		s = s.replace("~cu-nd","~computenodedata");
 		s = s.replace("~cu-ds","~computedataset");
+	
 		s = s.replace("~a-nd","~addnodedata");
 		s = s.replace("~a-n","~addnode");
 		s = s.replace("~a-cgr","~addconnectiongroupreversed");
@@ -61,6 +85,8 @@ public class Supergraph
 		s = s.replace("~q-p","~pathquery");
 		s = s.replace("~run","~runfromfile");
 		s = s.replace("~l-r","~loadresults");
+		s = s.replace("~li-s","~listsets");
+		s = s.replace("~ev-s","~evaluateset");
 		s = s.replace("~s-r","~saveresults");
 		s = s.replace("~w-g","~writegraph");
 		s = s.replace("~OMGPLSTOHALP","~help");
@@ -340,36 +366,61 @@ public class Supergraph
 				String commandlength = command[0] + " " + command[1] + " ";
 				String query = 	commandinput.substring(commandlength.length());
 				System.out.println("Setting node data to: "+ command[1] + " = " + query +":...");
+				query = filterQuerySets(query); //inject sets into query
 				graph.runNodeComputation(lastqueryresults,command[1],query);
 				
 				return true;
 				}
 			}		
-		if (command[0].equals("~computedataset")) //Runs through nodes from last query and computes the value of a given expression, putting the result into each node
+		if (command[0].equals("~computedataset")) //Runs through nodes from last query and computes the value of a given expression, and returns the results as a dataset
 			{
 			if(command.length >= 2)
 				{
 				String commandlength = command[0] + " ";
 				String query = 	commandinput.substring(commandlength.length());
-				//System.out.println("Setting node data to: "+ command[1] + " = " + query +":...");
-				System.out.println(graph.computeDataSet(lastqueryresults,query));
-				SavedComputationResults.put(command[1],graph.computeDataSet(lastqueryresults,query));
+				query = filterQuerySets(query); //inject sets into query
+				System.out.println("Computing data set" + " = " + query +":...");
+				//System.out.println(graph.computeDataSet(lastqueryresults,query));
+				SavedComputationResults.put(lastresult,graph.computeDataSet(lastqueryresults,query));
 				
 				return true;
 				}
-			}	
+			}
+			
+		if (command[0].equals("~evaluateset")) //Evaluates an expression, possibly using datasets, then places the result as a dataset
+			{
+			if(command.length >= 2)
+				{
+				String commandlength = command[0] + " ";
+				String query = 	commandinput.substring(commandlength.length());
+				query = filterQuerySets(query); //inject sets into query
+				System.out.println("Computing data set" + " = " + query +":...");
+				//System.out.println(graph.computeDataSet(lastqueryresults,query));
+				String evaluatedstring = Query.parseString(query);
+				if(!evaluatedstring.equals("NULLRETURN")) //parse the query looking for a successful return
+					{
+					ArrayList<String> templist = new ArrayList<String>(); //make a new list so it's formatted for SaveComputationResults
+					templist.add(evaluatedstring); //add answer to list
+					SavedComputationResults.put(lastresult,templist); //put the list in the results
+					return true; //successful command run, return true
+					}
+				return false; //unsuccessful
+				}
+			}
+			
 		if (command[0].equals("~nodequery")) //runs a nodequery on the initial graph and saves result to memory.
 			{
 			System.out.println("Running node query:...");
 			String query = 	commandinput.substring(11);
+			query = filterQuerySets(query); //inject sets into query
 			SavedQueryResults.put(lastresult,graph.getNodeNames(graph.runNodeQuery(lastqueryresults,query)));
-			
 			return true;
 			}		
 		if (command[0].equals("~connectionquery")) //runs a nodequery on the initial graph and saves result to memory.
 			{
 			System.out.println("Running connection query:...");
 			String query = 	commandinput.substring(17);
+			query = filterQuerySets(query); //inject sets into query
 			SavedQueryResults.put(lastresult,graph.getNodeNames(graph.runConnectionQuery(lastqueryresults,query)));
 			//graph.runConnectionQuery(query);
 			return true;
@@ -398,11 +449,29 @@ public class Supergraph
 				{
 				FileReader.printLines(FileReader.getFileLines("Documentation\\General Help.txt"));
 				}
-			if(command.length == 2)
+			if(command.length == 2) //if a specific topic is desired
 				{
 					
 				}
 			}
+			
+		if (command[0].equals("~listsets")) //prints all sets of data and their contained values
+			{
+			if(command.length == 1)
+				{
+				System.out.println("Listing data sets:...");
+				String[] dataList = this.SavedComputationResults.keySet().toArray(new String[0]); //returns list of variables in the node
+				for(int i = 0; i < dataList.length; i++) //iterate through and print out all data sets
+					{
+					System.out.println(dataList[i] + ": "+SavedComputationResults.get(dataList[i]));
+					}
+				}
+			if(command.length > 1) //if a specific set/sets should be desired.
+				{
+					
+				}
+			}
+		
 		if (command[0].equals("~loadresults")) //loads specified results list into lastresult
 			{
 			if(command.length == 2)

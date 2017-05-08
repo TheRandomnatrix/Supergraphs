@@ -4,4 +4,6 @@
 ~pr-r
 ~cu-nd Data2 ::Data2 + 20
 ~cu-ds ::Data2 + 20
+~ev-s MAX ( ##LASTRESULT )
+~li-s
 ~pr-n
