@@ -357,6 +357,17 @@ public class Graph
 		NodeQuery.computeNodeData(nodeList,varname,query);	
 		}
 	
+	public ArrayList<String> computeDataSet(String query) //Used for chaining queries. Runs a fresh query if meant to
+		{
+		return computeDataSet(getNodeArrayList(),query); //starts a fresh query from all nodes in the graph
+		}
+		
+	public ArrayList<String> computeDataSet(ArrayList<Node> nodeList, String query) //runs a specified query on a group of nodes and returns the nodes satisfying it
+		{
+		return NodeQuery.computeDataSet(nodeList,query);	
+		}
+
+	
 	public ArrayList<Node> runPathQuery(ArrayList<Node> nodeList, Node startnode, Node endnode) //runs a query getting the shortest path between two nodes
 		{	
 		ArrayList<Node> outputlist = new ArrayList<Node>();

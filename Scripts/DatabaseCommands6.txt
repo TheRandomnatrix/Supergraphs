@@ -3,5 +3,4 @@
 ~q-n LENGTH ( ::name ) == 5
 ~pr-r
 ~cu-nd Data2 ::Data2 + 20
-~cu-ds ::Data2 + 20
 ~pr-n

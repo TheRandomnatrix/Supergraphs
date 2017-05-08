@@ -18,14 +18,17 @@ public class Supergraph
 	{
 	private HashMap<String,Graph> NametoGraph; //converts names to graph pointers
 	private HashMap<String,ArrayList<String>> SavedQueryResults; //holds lists of names of nodes for loading/unloading from files
+	private HashMap<String,ArrayList<String>> SavedComputationResults; //holds lists of names of nodes for loading/unloading from files
 	private String lastresult;
 	//private ArrayList<Graph> queryResults;
 	Supergraph() //constructor
 		{
 		NametoGraph = new HashMap<String,Graph>();
 		SavedQueryResults = new HashMap<String,ArrayList<String>>();
+		SavedComputationResults = new HashMap<String,ArrayList<String>>();
 		lastresult = "LASTRESULT";
 		SavedQueryResults.put(lastresult, new ArrayList<String>());
+		SavedComputationResults.put(lastresult, new ArrayList<String>());
 		}
 		
 	public void addGraph(Graph graph)
@@ -41,6 +44,7 @@ public class Supergraph
 		s = s.replace("~pr-ac","~printallconnections");
 		s = s.replace("~c-c","~clearconnections");
 		s = s.replace("~cu-nd","~computenodedata");
+		s = s.replace("~cu-ds","~computedataset");
 		s = s.replace("~a-nd","~addnodedata");
 		s = s.replace("~a-n","~addnode");
 		s = s.replace("~a-cgr","~addconnectiongroupreversed");
@@ -212,7 +216,8 @@ public class Supergraph
 				graph.addConnectionGroup(lastqueryresults,newNode,traffic,verb,false);
 				return true;
 				}
-			}		
+			}
+			
 		if (command[0].equals("~addnodedata")) //adds node data to last query nodes. Overrides data unless otherwise specified
 			{
 			if(command.length >= 3)
@@ -248,8 +253,8 @@ public class Supergraph
 				{
 				String Name1 = 	command[1];
 				String Name2 = 	command[2];
-				System.out.println("Getting path over query between: "+Name1+" "+Name2+"...");
-				graph.runPathQuery(lastqueryresults,Name1,Name2);
+				System.out.println("Getting between: "+Name1+" and "+Name2+"...");
+				SavedQueryResults.put(lastresult,graph.getNodeNames(graph.runPathQuery(lastqueryresults,Name1,Name2)));
 				return true;
 				}
 			}		
@@ -339,7 +344,20 @@ public class Supergraph
 				
 				return true;
 				}
-			}			
+			}		
+		if (command[0].equals("~computedataset")) //Runs through nodes from last query and computes the value of a given expression, putting the result into each node
+			{
+			if(command.length >= 2)
+				{
+				String commandlength = command[0] + " ";
+				String query = 	commandinput.substring(commandlength.length());
+				//System.out.println("Setting node data to: "+ command[1] + " = " + query +":...");
+				System.out.println(graph.computeDataSet(lastqueryresults,query));
+				SavedComputationResults.put(command[1],graph.computeDataSet(lastqueryresults,query));
+				
+				return true;
+				}
+			}	
 		if (command[0].equals("~nodequery")) //runs a nodequery on the initial graph and saves result to memory.
 			{
 			System.out.println("Running node query:...");
