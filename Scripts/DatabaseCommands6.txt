@@ -3,4 +3,11 @@
 ~q-n LENGTH ( ::name ) == 5
 ~pr-r
 ~cu-nd Data2 ::Data2 + 20
+~cu-ds ::Data2 + ::Data1
+~s-s oldset
+~ev-s MAX ( ##oldset )
+~s-s maximum
+~ev-s MIN ( ##oldset )
+~s-s minimum
+~li-s
 ~pr-n

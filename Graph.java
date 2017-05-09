@@ -146,33 +146,35 @@ public class Graph
 		String lastword = "";
 		//read from data file
         while(inFile1.hasNextLine()) //iterate through file line by line
-		{
-		String line = inFile1.nextLine(); //read line
-		//Fix any spacing issues with periods so a period is its own "word"	
-		line = line.replace(" .",".");
-		line = line.replace(". ",".");	
-		line = line.replace("."," . ");
-			
-		String[] words = line.split(" "); //split into words
-		for (int i = 0; i < words.length; i++) //iterate word by word
 			{
-			currentword = words[i];
-			if(getNode(currentword) == null) //check if word does not exist in dictionary
+			String line = inFile1.nextLine(); //read line
+			//Fix any spacing issues with periods so a period is its own "word"	
+			line = line.replace(" .",".");
+			line = line.replace(". ",".");	
+			line = line.replace("."," . ");
+				
+			String[] words = line.split(" "); //split into words
+			for (int i = 0; i < words.length; i++) //iterate word by word
 				{
-				Node newNode = new Node(currentword,this); //create the word
-				NametoNode.put(currentword,newNode); //add the word to this graphs map for reference
+				currentword = words[i];
+				if(getNode(currentword) == null) //check if word does not exist in dictionary
+					{
+					Node newNode = new Node(currentword,this); //create the word
+					NametoNode.put(currentword,newNode); //add the word to this graphs map for reference
+					}
+				if(!lastword.equals("")) //check if second or more word
+					{
+					Node currentwordnode = NametoNode.get(currentword);
+					Node lastwordnode = NametoNode.get(lastword);
+					//DO NOT FORGET TO UNCOMMENT THIS CODE OUT WHEN DONE. WITHOUT THIS IT DOESN'T STORE BACKWARDS CONTEXT
+					currentwordnode.addTrafficConnection(lastword,1,"before");
+					lastwordnode.addTrafficConnection(currentword,1,"after");
+					}
+				lastword = currentword;
 				}
-			if(!lastword.equals("")) //check if second or more word
-				{
-				Node currentwordnode = NametoNode.get(currentword);
-				Node lastwordnode = NametoNode.get(lastword);
-				//DO NOT FORGET TO UNCOMMENT THIS CODE OUT WHEN DONE. WITHOUT THIS IT DOESN'T STORE BACKWARDS CONTEXT
-				//currentwordnode.addTrafficConnection(lastword,1,"before");
-				lastwordnode.addTrafficConnection(currentword,1,"after");
-				}
-			lastword = currentword;
+			currentword = "";
+			lastword = "";
 			}
-		}
         
         System.out.println("Data file read successful...");
         inFile1.close();

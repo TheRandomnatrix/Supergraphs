@@ -190,7 +190,8 @@ public class Supergraph
 				{
 				if(command.length > 1)
 					{
-					String filename = command[1];
+					String str = "~fromtextfile ";
+					String filename = commandinput.substring(str.length());
 					System.out.println("Creating from text file: "+filename+"...");
 					graph.graphFromTextFile(filename);
 					return true;
@@ -470,6 +471,20 @@ public class Supergraph
 			if(command.length > 1) //if a specific set/sets should be desired.
 				{
 					
+				}
+			}
+		if (command[0].equals("~loadset")) //loads specified results list into lastresult
+			{
+			if(command.length == 2)
+				{
+				ArrayList<String> nameslist = SavedComputationResults.get(command[1]);
+				if(nameslist != null)
+					{
+					System.out.println("Loading set from " + command[1]  +":...");
+					
+					SavedComputationResults.put(lastresult,nameslist); //moves list of results into last results
+					return true;
+					}
 				}
 			}
 		if (command[0].equals("~saveset")) //runs a nodequery on the initial graph and saves result to memory.
