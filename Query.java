@@ -92,6 +92,10 @@ public static String getLargestString(ArrayList<String> params) //returns larges
 public static String evaluate(ArrayList<String> params, String operand) //evalaute an expression containing an operator and at most 2 parameters 
 	{
 	//System.out.println("params: "+params + " "+operand);
+	if(operand.equals("COUNT")) //Levenshtein distance of left and right strings
+		{
+		return String.valueOf(params.size());
+		}
 	if(operand.equals("MAX")) //Levenshtein distance of left and right strings
 		{
 		if (params.size() > 0)
@@ -723,6 +727,7 @@ public static String parseString(String inputString) //Evaluates an infix expres
 				case "SMALLEST":
 				case "LARGEST":
 				case "CHOOSE":
+				case "COUNT":
 				case "AVG":
 				case "STRREPLACE":
 				case "CONCAT":

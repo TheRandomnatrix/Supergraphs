@@ -87,6 +87,7 @@ public class Supergraph
 		s = s.replace("~l-r","~loadresults");
 		s = s.replace("~li-s","~listsets");
 		s = s.replace("~ev-s","~evaluateset");
+		s = s.replace("~s-s","~saveset");
 		s = s.replace("~s-r","~saveresults");
 		s = s.replace("~w-g","~writegraph");
 		s = s.replace("~OMGPLSTOHALP","~help");
@@ -471,7 +472,15 @@ public class Supergraph
 					
 				}
 			}
-		
+		if (command[0].equals("~saveset")) //runs a nodequery on the initial graph and saves result to memory.
+			{
+			if(command.length == 2)
+				{
+				System.out.println("Saving set to " + command[1]  +":...");
+				SavedComputationResults.put(command[1],(ArrayList<String>)this.SavedComputationResults.get(lastresult).clone()); //gets results of last query, converts the nodes to a list of names, then saves it to input name
+				return true;
+				}
+			}	
 		if (command[0].equals("~loadresults")) //loads specified results list into lastresult
 			{
 			if(command.length == 2)
@@ -486,6 +495,7 @@ public class Supergraph
 					}
 				}
 			}
+		
 		if (command[0].equals("~saveresults")) //runs a nodequery on the initial graph and saves result to memory.
 			{
 			if(command.length == 2)
