@@ -36,7 +36,7 @@ public class Supergraph
 		{
 		NametoGraph.put(graph.getName(),graph);
 		}
-	
+		
 	private String filterQuerySets(String rawquery) //returns string replacing keywords with their actual values from
 		{
 		String q = rawquery;
@@ -84,10 +84,12 @@ public class Supergraph
 		s = s.replace("~q-c","~connectionquery");
 		s = s.replace("~q-p","~pathquery");
 		s = s.replace("~run","~runfromfile");
-		s = s.replace("~l-r","~loadresults");
+		s = s.replace("~l-r","~loadresults"); 
+		s = s.replace("~l-sff","~loadsetfromfile");
 		s = s.replace("~li-s","~listsets");
 		s = s.replace("~ev-s","~evaluateset");
 		s = s.replace("~s-s","~saveset");
+		s = s.replace("~w-s","~writeset");
 		s = s.replace("~s-r","~saveresults");
 		s = s.replace("~w-g","~writegraph");
 		s = s.replace("~OMGPLSTOHALP","~help");
@@ -190,7 +192,7 @@ public class Supergraph
 				{
 				if(command.length > 1)
 					{
-					String str = "~fromtextfile ";
+					String str =  command[0]+" ";
 					String filename = commandinput.substring(str.length());
 					System.out.println("Creating from text file: "+filename+"...");
 					graph.graphFromTextFile(filename);
@@ -487,6 +489,22 @@ public class Supergraph
 					}
 				}
 			}
+		try	{
+			if (command[0].equals("~loadsetfromfile"))	//Create graph from file
+				{
+				if(command.length > 2)
+					{
+					String str = command[0]+" " + command[1] + " ";
+					String filename = commandinput.substring(str.length());
+					System.out.println("Creating from text file: "+filename+"...");
+					ArrayList<String> set = FileReader.getFileLines(filename);
+					SavedComputationResults.put(command[1],set); //moves list of results into last results
+					return true;
+					}
+				}
+			}
+		catch (FileNotFoundException e)
+		{return false;}
 		if (command[0].equals("~saveset")) //runs a nodequery on the initial graph and saves result to memory.
 			{
 			if(command.length == 2)
@@ -496,6 +514,23 @@ public class Supergraph
 				return true;
 				}
 			}	
+		
+		if (command[0].equals("~writeset"))	//writes specified set to a file
+			{
+			if(command.length > 2)
+				{
+				String str = command[0]+" " + command[1] + " ";
+				String filename = commandinput.substring(str.length());
+				ArrayList<String> set = SavedComputationResults.get(command[1]);
+					if(set != null)
+					{
+					System.out.println("Writing set to: "+filename+"...");
+					FileWriter.writeLines(set,filename);
+					SavedComputationResults.put(command[1],set); //moves list of results into last results
+					return true;
+					}
+				}
+			}
 		if (command[0].equals("~loadresults")) //loads specified results list into lastresult
 			{
 			if(command.length == 2)
@@ -510,7 +545,6 @@ public class Supergraph
 					}
 				}
 			}
-		
 		if (command[0].equals("~saveresults")) //runs a nodequery on the initial graph and saves result to memory.
 			{
 			if(command.length == 2)
