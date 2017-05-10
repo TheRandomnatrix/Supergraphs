@@ -1,6 +1,4 @@
-~ftf Input Files\\CiaphasCaneEdited.txt
+~ff Input Files\\NodeData2.txt
 ~g-an
-~q-n ( ::name == i )
-~pr-r
-~q-c ::verb == after
+~q-c both ::LEFTd1 == ::RIGHTd1
 ~pr-r

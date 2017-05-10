@@ -324,15 +324,15 @@ public class Graph
 		{}
 	}
 	
-	public ArrayList<Node> runConnectionQuery(String query) //Used for chaining queries. Runs a fresh query if meant to
+	public ArrayList<Node> runConnectionQuery(String query, String returnside) //Used for chaining queries. Runs a fresh query if meant to
 	{
-	return runConnectionQuery(getNodeArrayList(),query); //starts a fresh query from all nodes in the graph
+	return runConnectionQuery(getNodeArrayList(),query,returnside); //starts a fresh query from all nodes in the graph
 	}
 	
-	public ArrayList<Node> runConnectionQuery(ArrayList<Node> nodeList, String query) //runs a specified query on a group of nodes and returns the outbound nodes satisfying it
+	public ArrayList<Node> runConnectionQuery(ArrayList<Node> nodeList, String query, String returnside) //runs a specified query on a group of nodes and returns the outbound nodes satisfying it
 		{
 		ArrayList<Connection> connectlist = getAllConnections(nodeList);
-		return ConnectionQuery.getNodeQuery(connectlist,query);	
+		return ConnectionQuery.getNodeQuery(connectlist,query,returnside);	
 		//return newquery.getNodeQuery();	
 		}
 	

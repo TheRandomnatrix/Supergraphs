@@ -435,9 +435,10 @@ public class Supergraph
 		if (command[0].equals("~connectionquery")) //runs a nodequery on the initial graph and saves result to memory.
 			{
 			System.out.println("Running connection query:...");
-			String query = 	commandinput.substring(17);
+			String commandlength = command[0] + " " + command[1] + " ";
+			String query = 	commandinput.substring(commandlength.length());
 			query = filterQuerySets(query); //inject sets into query
-			SavedQueryResults.put(lastresult,graph.getNodeNames(graph.runConnectionQuery(lastqueryresults,query)));
+			SavedQueryResults.put(lastresult,graph.getNodeNames(graph.runConnectionQuery(lastqueryresults,query,command[1])));
 			//graph.runConnectionQuery(query);
 			return true;
 			}		

@@ -8,7 +8,7 @@ public class ConnectionQuery extends Query
 	{
 	private static final String variabletag = "::";
 	
-	public static ArrayList<Node> getNodeQuery(ArrayList<Connection> ConnectionList, String query) 
+	public static ArrayList<Node> getNodeQuery(ArrayList<Connection> ConnectionList, String query, String returnside) 
 		{
 		/*//This method evaluates every connection in the constructor with the constructor query
 			and returns the list of all destination nodes from all valid connections
@@ -20,7 +20,14 @@ public class ConnectionQuery extends Query
 		Set<Node> nodeList = new HashSet<Node>();
 		for (int i = 0; i < connectList.size(); i++)
 			{
-			nodeList.add(connectList.get(i).getrightNode()); //get the right nodes of all connections
+			if(returnside.equals("left") || returnside.equals("both"))
+				{
+				nodeList.add(connectList.get(i).getleftNode()); //get the right nodes of all connections
+				}
+			if(returnside.equals("right") || returnside.equals("both"))
+				{
+				nodeList.add(connectList.get(i).getrightNode()); //get the right nodes of all connections
+				}
 			}
 		ArrayList<Node> setList = new ArrayList<Node>(nodeList);
 		return setList;
@@ -35,6 +42,19 @@ public class ConnectionQuery extends Query
 			q = q.replaceAll(variabletag+"verb",connect.getVerb());
 			q = q.replaceAll(variabletag+"leftname",connect.getleftNode().getName());
 			q = q.replaceAll(variabletag+"rightname",connect.getrightNode().getName());
+			
+			Node node = connect.getleftNode();
+			String[] leftdataList = node.getNodeData().keySet().toArray(new String[0]); //returns list of variables in the node
+			for(int i = 0; i < leftdataList.length; i++) //iterate through query, replacing all variables with their actual value if it exists
+				{
+				q = q.replaceAll(variabletag+"LEFT"+leftdataList[i],node.getNodeDataValue(leftdataList[i]));
+				}
+			node = connect.getrightNode();
+			String[] rightdataList = node.getNodeData().keySet().toArray(new String[0]); //returns list of variables in the node
+			for(int i = 0; i < rightdataList.length; i++) //iterate through query, replacing all variables with their actual value if it exists
+				{
+				q = q.replaceAll(variabletag+"RIGHT"+rightdataList[i],node.getNodeDataValue(rightdataList[i]));
+				}	
 			return q;
 		}
 	
