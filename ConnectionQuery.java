@@ -49,12 +49,20 @@ public class ConnectionQuery extends Query
 				{
 				q = q.replaceAll(variabletag+"LEFT"+leftdataList[i],node.getNodeDataValue(leftdataList[i]));
 				}
+			if(q.indexOf((variabletag+"LEFT"+"ConnectionCount"))!=-1)	//checks to see if connection count is desired. Check is done to avoid calling it uneccessarily
+				{
+				q = q.replaceAll((variabletag+"LEFT"+"ConnectionCount"),String.valueOf(node.getAllConnections().size())); //gets count of outbound connections
+				}
 			node = connect.getrightNode();
 			String[] rightdataList = node.getNodeData().keySet().toArray(new String[0]); //returns list of variables in the node
 			for(int i = 0; i < rightdataList.length; i++) //iterate through query, replacing all variables with their actual value if it exists
 				{
 				q = q.replaceAll(variabletag+"RIGHT"+rightdataList[i],node.getNodeDataValue(rightdataList[i]));
-				}	
+				}
+			if(q.indexOf((variabletag+"RIGHT"+"ConnectionCount"))!=-1)	//checks to see if connection count is desired. Check is done to avoid calling it uneccessarily
+				{
+				q = q.replaceAll((variabletag+"RIGHT"+"ConnectionCount"),String.valueOf(node.getAllConnections().size())); //gets count of outbound connections
+				}
 			return q;
 		}
 	

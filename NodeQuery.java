@@ -15,6 +15,11 @@ public class NodeQuery extends Query
 		q = q.replaceAll(variabletag+"name",node.getName()); //replaces "name" with node's name
 		q = q.replaceAll(variabletag+"RANDOMNUM",String.valueOf((int) (Math.random() * 100000))); //replaces randomnum with random number
 		
+		if(q.indexOf((variabletag+"ConnectionCount"))!=-1)	//checks to see if connection count is desired. Check is done to avoid calling it uneccessarily
+			{
+			q = q.replaceAll((variabletag+"ConnectionCount"),String.valueOf(node.getAllConnections().size())); //gets count of outbound connections
+			}
+			
 		String[] dataList = node.getNodeData().keySet().toArray(new String[0]); //returns list of variables in the node
 		for(int i = 0; i < dataList.length; i++) //iterate through query, replacing all variables with their actual value if it exists
 			{

@@ -1,4 +1,4 @@
 ~ff Input Files\\NodeData2.txt
 ~g-an
-~q-c both ::LEFTd1 == ::RIGHTd1
+~q-n ::ConnectionCount == 2
 ~pr-r
