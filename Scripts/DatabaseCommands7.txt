@@ -1,6 +1,0 @@
-~ftf Input Files\\CiaphasCaneEdited.txt
-~g-an
-~q-n ( ::name == i )
-~pr-r
-~q-c ::verb == after
-~pr-r

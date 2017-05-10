@@ -252,21 +252,25 @@ public class Supergraph
 			{
 			if(command.length >= 3)
 				{
-				String variablename 	= command[1];
-				String nodedata 		= command[2];
 				boolean override = true;	//overrides node data by default
-				if(command.length >= 4) 
+				if((command.length % 2) == 0) 
 					{
-					if (command[3].equals("false") || command[3].equals("f")) //check if override to false
+					if (command[command.length-1].equals("false") || command[command.length-1].equals("f")) //check if override to false
 						{
 						override = false;
 						}
 					}
 				System.out.println("Adding node data:...");
-				graph.addNodeData(lastqueryresults,variablename,nodedata,override);
+				for(int i = 2; i < command.length; i+=2)
+					{
+					String variablename 	= command[i-1];
+					String nodedata 		= command[i];
+					graph.addNodeData(lastqueryresults,variablename,nodedata,override);
+					}
 				return true;
 				}
 			}
+				
 		if (command[0].equals("~removenodedata")) //addTraffic Name1 Name2 traffic verb
 			{
 			if(command.length == 2)
@@ -279,12 +283,20 @@ public class Supergraph
 			}		
 		if (command[0].equals("~pathquery")) //addTraffic Name1 Name2 traffic verb
 			{
-			if(command.length == 3)
+			if(command.length >= 3)
 				{
 				String Name1 = 	command[1];
 				String Name2 = 	command[2];
-				System.out.println("Getting between: "+Name1+" and "+Name2+"...");
-				SavedQueryResults.put(lastresult,graph.getNodeNames(graph.runPathQuery(lastqueryresults,Name1,Name2)));
+				boolean weighted = false;
+				if(command.length == 4)
+					{
+					if (command[3].equals("true") || command[3].equals("t")) //check if override to false
+						{
+						weighted = true;
+						}
+					}
+				System.out.println("Getting path between: "+Name1+" and "+Name2+"...");
+				SavedQueryResults.put(lastresult,graph.getNodeNames(graph.runPathQuery(lastqueryresults,Name1,Name2,weighted)));
 				return true;
 				}
 			}		

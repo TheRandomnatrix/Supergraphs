@@ -5,7 +5,7 @@ import java.util.List;
 public class PathFinder
 	{
 
-	public static ArrayList<Node> getPath(Node startnode, Node endnode, ArrayList<Node> nodelist) 
+	public static ArrayList<Node> getPath(Node startnode, Node endnode, ArrayList<Node> nodelist, boolean weighted) 
 		{
 		//Given a start and end node, compute a path between the two over the given subgraph using a breadth first search
 
@@ -28,25 +28,35 @@ public class PathFinder
 		distances.put(startnode,0); //set the starting point distance to 0
 		nodeset.add(startnode); //add the start node to the list of nodes to visit
 		
-		while(nodeset.size() > 0 && found == false) //iterate through the list of 
+		while(nodeset.size() > 0 && found == false) //iterate through the list of to be visited nodes, which will expand/contract with each iteration
 			{
 			//System.out.println("	"+nodeset.get(0).getName());
-			connectlist.clear();
-			connectlist.addAll(nodeset.get(0).getAllConnections());
-			for(int i=0; i < connectlist.size(); i++) //get all nodes
+			connectlist.clear();		//reset the list of connections
+			connectlist.addAll(nodeset.get(0).getAllConnections());	//get all the connections for current node
+			for(int i=0; i < connectlist.size(); i++) //run through those connections
 				{
 				//System.out.println("	test");
-				Node rightnode =  connectlist.get(i).getrightNode();
-				if(distances.containsKey(rightnode))
+				Node rightnode =  connectlist.get(i).getrightNode(); //get the end node from each connection
+				if(distances.containsKey(rightnode)) 	//check if that node lies within the subgraph, otherwise ignore it
 					{
-					//System.out.println(nodeset.get(0).getName() + " -> "+rightnode.getName());
-					//System.out.println("	"+(distances.get(rightnode)+1) + " : " + distances.get(nodeset.get(0)));
-					if(distances.get(rightnode) > (distances.get(nodeset.get(0))+1)) //check if tentative distance is less than current distance
+					
+					int TentativeDist = 1;	//set tentative distance to 
+					if(weighted)
+						{
+						TentativeDist = Math.abs(connectlist.get(i).getTraffic());
+						if (TentativeDist == 0)
+							{
+							TentativeDist = 1;
+							}
+						}
+					System.out.println(nodeset.get(0).getName() + " -> "+rightnode.getName());
+					System.out.println("	"+(distances.get(rightnode)) + " : " + (distances.get(nodeset.get(0))+TentativeDist));
+					if(distances.get(rightnode) > (distances.get(nodeset.get(0))+TentativeDist)) //check if tentative distance is less than current distance
 						{
 						//System.out.println("	less than");
-						distances.put(rightnode,distances.get(nodeset.get(0))); 	//set distance to tentative distance
-						nodeset.add(rightnode); 												//add the node to the list to traverse
-						parent.put(rightnode,nodeset.get(0)); 							//make the parent of that node the current node
+						distances.put(rightnode,distances.get(nodeset.get(0))+TentativeDist); 	//set distance to tentative distance
+						nodeset.add(rightnode); 																		//add the node to the list to traverse
+						parent.put(rightnode,nodeset.get(0)); 													//make the parent of that node the current node
 						if(rightnode == endnode) //found the end goal
 							{
 							found = true;
@@ -57,16 +67,16 @@ public class PathFinder
 			nodeset.remove(0);
 			}
 			
-		if(found == true)
+		if(found == true) //path was found. Backtrace from end and return list of nodes
 			{
 			System.out.println("found it");
-			Node p = endnode;
-			outputlist.add(0,p);
-			System.out.println("		"+p.getName());
-			p = parent.get(p);
-			while(p != null)
+			Node p = endnode; 	//get end node
+			outputlist.add(0,p);	//add to output list
+			//System.out.println("		"+p.getName());
+			p = parent.get(p);	
+			while(p != null)	//backtrace to start
 				{
-				System.out.println("		"+p.getName());
+				//System.out.println("		"+p.getName());
 				outputlist.add(0,p);
 				p = parent.get(p);
 				}

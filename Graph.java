@@ -332,9 +332,7 @@ public class Graph
 	public ArrayList<Node> runConnectionQuery(ArrayList<Node> nodeList, String query) //runs a specified query on a group of nodes and returns the outbound nodes satisfying it
 		{
 		ArrayList<Connection> connectlist = getAllConnections(nodeList);
-		ConnectionQuery newquery = new ConnectionQuery(connectlist,query);
-
-		return newquery.getNodeQuery();	
+		return ConnectionQuery.getNodeQuery(connectlist,query);	
 		//return newquery.getNodeQuery();	
 		}
 	
@@ -370,21 +368,21 @@ public class Graph
 		}
 
 	
-	public ArrayList<Node> runPathQuery(ArrayList<Node> nodeList, Node startnode, Node endnode) //runs a query getting the shortest path between two nodes
+	public ArrayList<Node> runPathQuery(ArrayList<Node> nodeList, Node startnode, Node endnode, boolean weighted) //runs a query getting the shortest path between two nodes
 		{	
 		ArrayList<Node> outputlist = new ArrayList<Node>();
 		if ((startnode != null)&&(endnode != null)&&(nodeList.size() > 0))
 			{
-			outputlist = PathFinder.getPath(startnode,endnode,nodeList);
+			outputlist = PathFinder.getPath(startnode,endnode,nodeList,weighted);
 			}
 		return outputlist;	
 		}
 		
-	public ArrayList<Node> runPathQuery(ArrayList<Node> nodeList, String start, String end) //calls runPathQuery with nodes, using names
+	public ArrayList<Node> runPathQuery(ArrayList<Node> nodeList, String start, String end, boolean weighted) //calls runPathQuery with nodes, using names
 		{
 		Node startnode = getNode(start);
 		Node endnode = getNode(end);
-		return runPathQuery(nodeList, startnode,endnode);
+		return runPathQuery(nodeList, startnode,endnode,weighted);
 		}
 	
 	public ArrayList<Connection> getAllConnections(ArrayList<Node> nodeslist) //return all connections for a specified list of nodes
@@ -423,7 +421,4 @@ public class Graph
 			}
 		return whatever;
 		}
-	
-		
-	
 }

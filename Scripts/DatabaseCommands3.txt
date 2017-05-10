@@ -1,5 +1,6 @@
-~l-sff testset Input Files\\test set.txt
-~li-s
-~w-s testset Input Files\\write set.txt
-~l-sff test2 Input Files\\write set.txt
-li-s
+~ftf Input Files\\CiaphasCaneEdited.txt
+~g-an
+~q-n ( ::name == i )
+~pr-r
+~q-c ::verb == after
+~pr-r
