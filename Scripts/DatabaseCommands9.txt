@@ -1,5 +1,4 @@
-~ftf Input Files\\CiaphasCaneEdited.txt
+~ff Input Files\\NodeData2.txt
 ~g-an
-~q-n ( ::name == he ) || ( name == i )
-~q-c right ::verb == after
+~q-n ::ConnectionCount == 2
 ~pr-r

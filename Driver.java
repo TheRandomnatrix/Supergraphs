@@ -39,15 +39,19 @@ public class Driver
 	catch (FileNotFoundException e)
 	{}*/
 	
+	
 	/*
+	Scanner sc = new Scanner(System.in);
+	String input = sc.nextLine();
+	
 	while(!input.equals("/exit"))
 	{
 	supergraph.runCommand(input,graph);
 	//System.out.println(input);
 	input = sc.nextLine();
-	}*/
+	} */
 	
-	supergraph.runCommand("~run "+"Scripts\\DatabaseCommands3.txt",graph,false); //
+	supergraph.runCommand("~run "+"Scripts\\DatabaseCommands10.txt",graph,false); //
 	
 	/*supergraph.runCommand("/fromfile "+datafilename,graph);
 	//supergraph.runCommand("/pr-n",graph);

@@ -28,7 +28,7 @@ public class PathFinder
 		distances.put(startnode,0); //set the starting point distance to 0
 		nodeset.add(startnode); //add the start node to the list of nodes to visit
 		
-		while(nodeset.size() > 0 && found == false) //iterate through the list of to be visited nodes, which will expand/contract with each iteration
+		while(nodeset.size() > 0) //iterate through the list of to be visited nodes, which will expand/contract with each iteration
 			{
 			//System.out.println("	"+nodeset.get(0).getName());
 			connectlist.clear();		//reset the list of connections
@@ -49,8 +49,8 @@ public class PathFinder
 							TentativeDist = 1;
 							}
 						}
-					System.out.println(nodeset.get(0).getName() + " -> "+rightnode.getName());
-					System.out.println("	"+(distances.get(rightnode)) + " : " + (distances.get(nodeset.get(0))+TentativeDist));
+					//System.out.println(nodeset.get(0).getName() + " -> "+rightnode.getName());
+					//System.out.println("	"+(distances.get(rightnode)) + " : " + (distances.get(nodeset.get(0))+TentativeDist));
 					if(distances.get(rightnode) > (distances.get(nodeset.get(0))+TentativeDist)) //check if tentative distance is less than current distance
 						{
 						//System.out.println("	less than");
@@ -69,7 +69,7 @@ public class PathFinder
 			
 		if(found == true) //path was found. Backtrace from end and return list of nodes
 			{
-			System.out.println("found it");
+			//System.out.println("found it");
 			Node p = endnode; 	//get end node
 			outputlist.add(0,p);	//add to output list
 			//System.out.println("		"+p.getName());

@@ -86,6 +86,7 @@ public class Supergraph
 		s = s.replace("~run","~runfromfile");
 		s = s.replace("~l-r","~loadresults"); 
 		s = s.replace("~l-sff","~loadsetfromfile");
+		s = s.replace("~l-rff","~loadresultsfromfile");
 		s = s.replace("~li-s","~listsets");
 		s = s.replace("~ev-s","~evaluateset");
 		s = s.replace("~s-s","~saveset");
@@ -93,8 +94,11 @@ public class Supergraph
 		s = s.replace("~s-r","~saveresults");
 		s = s.replace("~w-g","~writegraph");
 		s = s.replace("~OMGPLSTOHALP","~help");
+		s = s.replace("~w-rf","~writeresultsformatted");
 		s = s.replace("~w-r","~writeresults");
 		s = s.replace("~j","~join");
+		s = s.replace("~ui","~getuserinput");
+		
 		//s = s.replace("/pr","/printresults");	
 		return s;
 		}
@@ -247,6 +251,23 @@ public class Supergraph
 				return true;
 				}
 			}
+		
+		if (command[0].equals("~getuserinput")) //Get input from user and store it in data set
+			{
+			if((command.length == 1) || (command.length == 2)) 
+				{
+				System.out.println("Getting user input: ");
+				Scanner sc = new Scanner(System.in);
+				String userinput = sc.nextLine();
+				ArrayList<String> inputlist = new ArrayList<String>();
+				inputlist.add(userinput);
+				if(command.length == 1)
+					SavedComputationResults.put(lastresult,inputlist);  //if no data set was specified, put it in the last result
+				else
+					SavedComputationResults.put(command[1],inputlist); // otherwise put it in specified dataset
+				return true;
+				}
+			}	
 			
 		if (command[0].equals("~addnodedata")) //adds node data to last query nodes. Overrides data unless otherwise specified
 			{
@@ -306,6 +327,9 @@ public class Supergraph
 			SavedQueryResults.put(lastresult,graph.getNodeNames(graph.getNodeArrayList()));
 			return true;
 			}
+			
+		
+			
 		if (command[0].equals("~join")) //runs a nodequery on the initial graph and saves result to memory.
 			{
 			if(command.length == 4)
@@ -451,7 +475,7 @@ public class Supergraph
 				return true;
 				}
 			}
-		if (command[0].equals("~writeresults")) //runs a nodequery on the initial graph and saves result to memory.
+		if (command[0].equals("~writeresultsformatted")) //runs a nodequery on the initial graph and saves result to memory.
 			{
 			if(command.length > 1)
 				{
@@ -544,6 +568,22 @@ public class Supergraph
 					}
 				}
 			}
+		if (command[0].equals("~writeresults"))	//writes specified set to a file
+			{
+			if(command.length > 2)
+				{
+				String str = command[0]+" " + command[1] + " ";
+				String filename = commandinput.substring(str.length());
+				ArrayList<String> set = SavedQueryResults.get(command[1]);
+					if(set != null)
+					{
+					System.out.println("Writing results to: "+filename+"...");
+					FileWriter.writeLines(set,filename);
+					SavedQueryResults.put(command[1],set); //moves list of results into last results
+					return true;
+					}
+				}
+			}
 		if (command[0].equals("~loadresults")) //loads specified results list into lastresult
 			{
 			if(command.length == 2)
@@ -558,6 +598,22 @@ public class Supergraph
 					}
 				}
 			}
+		try	{
+			if (command[0].equals("~loadresultsfromfile"))	//Create graph from file
+				{
+				if(command.length > 2)
+					{
+					String str = command[0]+" " + command[1] + " ";
+					String filename = commandinput.substring(str.length());
+					System.out.println("Creating from text file: "+filename+"...");
+					ArrayList<String> set = FileReader.getFileLines(filename);
+					SavedQueryResults.put(command[1],set); //moves list of results into last results
+					return true;
+					}
+				}
+			}
+		catch (FileNotFoundException e)
+		{return false;}
 		if (command[0].equals("~saveresults")) //runs a nodequery on the initial graph and saves result to memory.
 			{
 			if(command.length == 2)
