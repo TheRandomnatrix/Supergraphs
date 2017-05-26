@@ -13,6 +13,9 @@ public class Node
 	//Maintains a variablename:variablevalue data mapping
 	private HashMap<String,String> NodeData;
 	
+	private HashSet<String> DataGroups;	//list of names of nodes that this node belongs to
+	
+	
 	Node(String name,Graph parentGraph) //constructor
 		{
 		//Maps connections. 
@@ -20,6 +23,7 @@ public class Node
 		this.Name = name; 
 		this.parentGraph = parentGraph;
 		NodeData = new HashMap<String,String>();
+		this.DataGroups = new HashSet<String>();
 		}
 
 	public String getName()
@@ -32,9 +36,79 @@ public class Node
 		return this.NodeData;
 		}
 	
+
+	public void inheritData()  //returns node data from inherited nodes. Will recursively run through things
+		{
+		this.NodeData = (HashMap<String,String>)getNodeDataInherited(0).clone();
+		}
+		
+	public HashMap<String,String> getNodeDataInherited(int depth)  //returns node data from inherited nodes. Will recursively run through things
+		{
+		//print the depth and current node
+		for (int b = 0; b < depth; b++)
+			System.out.print("	");
+		System.out.println("current node: "+this.getName());	//print the name of the node
+			
+
+		HashMap<String,String> ReturnData = new HashMap<String,String>();	// this.NodeData.clone();
+		if(!DataGroups.isEmpty())
+			{
+			String[] namesList = DataGroups.toArray(new String[0]);		//get the list of groups
+			//System.out.println("	parents: "+namesList);
+				
+			for(int i = 0; i <namesList.length; i++) 	//iterate through all groups
+				{
+				Node node = parentGraph.getNode(namesList[i]);
+				if(node != null)
+					{
+					HashMap<String,String> InheritedData = node.getNodeDataInherited(depth+1);	//get 
+					String[] dataList = InheritedData.keySet().toArray(new String[0]); //returns list of variables in the node
+						
+					for(int k = 0; k < dataList.length; k++) //iterate through inherited data
+						{
+						ReturnData.put(dataList[k],node.getNodeDataValue(dataList[k]));	//put the inherited data in
+						}
+					}
+				}
+				
+			String[] dataList = this.getNodeData().keySet().toArray(new String[0]); //returns list of variables in the node
+			for(int i = 0; i < dataList.length; i++) //iterate through current data
+				{
+				ReturnData.put(dataList[i],this.getNodeDataValue(dataList[i]));
+				}
+			}
+		else
+			{
+			return getNodeData(); //return ones own data
+			}
+		return ReturnData;
+		}
+	
 	public Boolean containsNodeData(String variablename) //checks to see if the node contains a specified variable
 		{
 			return NodeData.containsKey(variablename);
+		}
+	
+	public void addDataGroup(String name) //adds a data group to the node
+		{
+		if(!this.Name.equals(name)) //make sure the node is not directly a child of itself
+			{
+			this.DataGroups.add(name);
+			}
+		else
+			{
+			System.out.println("ERROR: CANNOT ADD CHILD TO SELF");
+			}
+		}
+	
+	public HashSet<String> getDataGroups() //adds a data group
+		{
+		return this.DataGroups;
+		}
+		
+	public void removeDataGroup(String name) //removes a data group
+		{
+		DataGroups.remove(name);
 		}
 		
 	public String getNodeDataValue(String variablename)  //returns node data. null if it doesn't exist

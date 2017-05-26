@@ -99,8 +99,8 @@ public class Supergraph
 		s = s.replace("~j","~join");
 		s = s.replace("~ui","~getuserinput");
 		s = s.replace("~time","~gettimestamp");
-		
-		
+		s = s.replace("~a-dg","~adddatagroup");
+		s = s.replace("~i-dg","~inheritdatagroup");
 		//s = s.replace("/pr","/printresults");	
 		return s;
 		}
@@ -226,7 +226,28 @@ public class Supergraph
 					}
 				}
 			}
-				
+		
+		if (command[0].equals("~adddatagroup")) //addTraffic Name1 Name2 traffic verb
+			{
+			if(command.length == 2)
+				{
+				String Name1 = 	command[1];
+				System.out.println("Adding group data...");
+				Node groupnode = graph.getNode(Name1);
+				graph.addDataGroup(lastqueryresults,groupnode);
+				return true;
+				}
+			}
+		if (command[0].equals("~inheritdatagroup")) //addTraffic Name1 Name2 traffic verb
+			{
+			if(command.length == 1)
+				{
+				System.out.println("Inheriting data:...");
+				graph.inheritDataGroup(lastqueryresults);
+				return true;
+				}
+			}
+		
 		if (command[0].equals("~addconnectiongroup")) //addTraffic Name1 Name2 traffic verb
 			{
 			if(command.length == 4)

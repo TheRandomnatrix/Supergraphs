@@ -246,6 +246,28 @@ public class Graph
 				}
 			}
 		}
+	
+	public void inheritDataGroup(ArrayList<Node> nodeslist) //makes all nodes fully inherit the data from their parents
+		{
+		for(int i=0; i < nodeslist.size(); i++)
+			{
+			Node node = nodeslist.get(i);
+			node.inheritData(); //adds connections from node to all nodes in list
+			}
+		}	
+		
+	public void addDataGroup(ArrayList<Node> nodeslist,Node node) //adds specified group to list
+		{
+		if (node != null) //makes sure node isn't null
+			{
+			String name =	node.getName();
+			for(int i=0; i < nodeslist.size(); i++)
+				{
+				Node output = nodeslist.get(i);
+				output.addDataGroup(name); 
+				}
+			}
+		}
 		
 	public void clearGraph() //clears all nodes and connections from graph
 		{

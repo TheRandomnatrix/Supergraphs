@@ -4,7 +4,7 @@ Name2,d1,1
 Name3,d1,2
 Name4,d1,2
 Name5,d1,3
-Name6,d1,4
+Name6,d1,3,d2,4
 Name7,d1,5
 Name8,d1,6
 Name9,d1,7
