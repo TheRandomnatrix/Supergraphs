@@ -108,12 +108,12 @@ public static String evaluate(ArrayList<String> params, String operand) //evalau
 				}
 			if(allNumeric)
 				{
-				int max = Integer.parseInt(params.get(0));
+				long max = Long.parseLong(params.get(0));
 				for (int i = 0; i < params.size(); i++)
 					{
-					if (max < Integer.parseInt(params.get(i)))
+					if (max < Long.parseLong(params.get(i)))
 						{
-						max = Integer.parseInt(params.get(i));
+						max = Long.parseLong(params.get(i));
 						}
 					}
 				return String.valueOf(max);
@@ -132,12 +132,12 @@ public static String evaluate(ArrayList<String> params, String operand) //evalau
 				}
 			if(allNumeric)
 				{
-				int min = Integer.parseInt(params.get(0));
+				long min = Long.parseLong(params.get(0));
 				for (int i = 0; i < params.size(); i++)
 					{
-					if (min > Integer.parseInt(params.get(i)))
+					if (min > Long.parseLong(params.get(i)))
 						{
-						min = Integer.parseInt(params.get(i));
+						min = Long.parseLong(params.get(i));
 						}
 					}
 				return String.valueOf(min);
@@ -156,10 +156,10 @@ public static String evaluate(ArrayList<String> params, String operand) //evalau
 				}
 			if(allNumeric)
 				{
-				int sum = Integer.parseInt(params.get(0));
+				long sum = Long.parseLong(params.get(0));
 				for (int i = 0; i < params.size(); i++)
 					{
-					sum += Integer.parseInt(params.get(i));
+					sum += Long.parseLong(params.get(i));
 					}
 				return String.valueOf((int) (sum / params.size()));
 				}
@@ -257,7 +257,7 @@ public static String evaluate(String leftString, String operand, String rightStr
 				if (isNumeric(leftString)) //both numerics
 					{
 					//System.out.println("ABS: "+leftString);
-					int leftnum = Integer.parseInt(leftString);
+					long leftnum = Long.parseLong(leftString);
 					return String.valueOf(Math.abs(leftnum));
 					}
 				else
@@ -280,7 +280,7 @@ public static String evaluate(String leftString, String operand, String rightStr
 				{
 				if (isNumeric(leftString)) //numerics
 					{
-					int leftnum = Integer.parseInt(leftString);
+					long leftnum = Long.parseLong(leftString);
 					return String.valueOf((int) (Math.sqrt(leftnum)));
 					}
 				else
@@ -292,7 +292,7 @@ public static String evaluate(String leftString, String operand, String rightStr
 				{
 				if (isNumeric(leftString)) //numerics
 					{
-					int leftnum = Integer.parseInt(leftString);
+					long leftnum = Long.parseLong(leftString);
 					return String.valueOf((int) (Math.random() * leftnum));
 					}
 				else
@@ -317,8 +317,8 @@ public static String evaluate(String leftString, String operand, String rightStr
 				{
 				if (isNumeric(leftString) && isNumeric(rightString)) //both numerics
 					{
-					int leftnum = Integer.parseInt(leftString);
-					int rightnum = Integer.parseInt(rightString);
+					long leftnum = Long.parseLong(leftString);
+					long rightnum = Long.parseLong(rightString);
 					return String.valueOf(leftnum + rightnum);
 					}
 				else
@@ -330,8 +330,8 @@ public static String evaluate(String leftString, String operand, String rightStr
 				{
 				if (isNumeric(leftString) && isNumeric(rightString)) //both numerics
 					{
-					int leftnum = Integer.parseInt(leftString);
-					int rightnum = Integer.parseInt(rightString);
+					long leftnum = Long.parseLong(leftString);
+					long rightnum = Long.parseLong(rightString);
 					return String.valueOf(leftnum - rightnum);
 					}
 				else
@@ -343,8 +343,8 @@ public static String evaluate(String leftString, String operand, String rightStr
 				{
 				if (isNumeric(leftString) && isNumeric(rightString)) //both numerics
 					{
-					int leftnum = Integer.parseInt(leftString);
-					int rightnum = Integer.parseInt(rightString);
+					long leftnum = Long.parseLong(leftString);
+					long rightnum = Long.parseLong(rightString);
 					return String.valueOf(leftnum * rightnum);
 					}
 				else
@@ -356,8 +356,8 @@ public static String evaluate(String leftString, String operand, String rightStr
 				{
 				if (isNumeric(leftString) && isNumeric(rightString)) //both numerics
 					{
-					int leftnum = Integer.parseInt(leftString);
-					int rightnum = Integer.parseInt(rightString);
+					long leftnum = Long.parseLong(leftString);
+					long rightnum = Long.parseLong(rightString);
 					return String.valueOf((int)(leftnum / rightnum));
 					}
 				else
@@ -369,8 +369,8 @@ public static String evaluate(String leftString, String operand, String rightStr
 				{
 				if (isNumeric(leftString) && isNumeric(rightString)) //both numerics
 					{
-					int leftnum = Integer.parseInt(leftString);
-					int rightnum = Integer.parseInt(rightString);
+					long leftnum = Long.parseLong(leftString);
+					long rightnum = Long.parseLong(rightString);
 					return String.valueOf(leftnum % rightnum);
 					}
 				else
@@ -382,8 +382,8 @@ public static String evaluate(String leftString, String operand, String rightStr
 				{
 				if (isNumeric(leftString) && isNumeric(rightString)) //both numerics
 					{
-					int leftnum = Integer.parseInt(leftString);
-					int rightnum = Integer.parseInt(rightString);
+					long leftnum = Long.parseLong(leftString);
+					long rightnum = Long.parseLong(rightString);
 					return  String.valueOf((int) (Math.log(leftnum) / Math.log(rightnum)));
 					}
 				else
@@ -395,8 +395,8 @@ public static String evaluate(String leftString, String operand, String rightStr
 				{
 				if (isNumeric(leftString) && isNumeric(rightString)) //both numerics
 					{
-					int leftnum = Integer.parseInt(leftString);
-					int rightnum = Integer.parseInt(rightString);
+					long leftnum = Long.parseLong(leftString);
+					long rightnum = Long.parseLong(rightString);
 					return  String.valueOf((int) Math.pow(leftnum, rightnum));
 					}
 				else
@@ -408,8 +408,8 @@ public static String evaluate(String leftString, String operand, String rightStr
 				{
 				if (isNumeric(leftString) && isNumeric(rightString)) //both numerics
 					{
-					int leftnum = Integer.parseInt(leftString);
-					int rightnum = Integer.parseInt(rightString);
+					long leftnum = Long.parseLong(leftString);
+					long rightnum = Long.parseLong(rightString);
 					if( leftnum == rightnum)
 						{
 						return "true";
@@ -435,8 +435,8 @@ public static String evaluate(String leftString, String operand, String rightStr
 				{
 				if (isNumeric(leftString) && isNumeric(rightString)) //both numerics
 					{
-					int leftnum = Integer.parseInt(leftString);
-					int rightnum = Integer.parseInt(rightString);
+					long leftnum = Long.parseLong(leftString);
+					long rightnum = Long.parseLong(rightString);
 					if( leftnum != rightnum)
 						{
 						return "true";
@@ -462,8 +462,8 @@ public static String evaluate(String leftString, String operand, String rightStr
 				{
 				if (isNumeric(leftString) && isNumeric(rightString)) //both numerics
 					{
-					int leftnum = Integer.parseInt(leftString);
-					int rightnum = Integer.parseInt(rightString);
+					long leftnum = Long.parseLong(leftString);
+					long rightnum = Long.parseLong(rightString);
 					if( leftnum > rightnum)
 						{
 						return "true";
@@ -482,8 +482,8 @@ public static String evaluate(String leftString, String operand, String rightStr
 				{
 				if (isNumeric(leftString) && isNumeric(rightString)) //both numerics
 					{
-					int leftnum = Integer.parseInt(leftString);
-					int rightnum = Integer.parseInt(rightString);
+					long leftnum = Long.parseLong(leftString);
+					long rightnum = Long.parseLong(rightString);
 					if( leftnum < rightnum)
 						{
 						return "true";
@@ -502,8 +502,8 @@ public static String evaluate(String leftString, String operand, String rightStr
 				{
 				if (isNumeric(leftString) && isNumeric(rightString)) //both numerics
 					{
-					int leftnum = Integer.parseInt(leftString);
-					int rightnum = Integer.parseInt(rightString);
+					long leftnum = Long.parseLong(leftString);
+					long rightnum = Long.parseLong(rightString);
 					if( leftnum >= rightnum)
 						{
 						return "true";
@@ -522,8 +522,8 @@ public static String evaluate(String leftString, String operand, String rightStr
 				{
 				if (isNumeric(leftString) && isNumeric(rightString)) //both numerics
 					{
-					int leftnum = Integer.parseInt(leftString);
-					int rightnum = Integer.parseInt(rightString);
+					long leftnum = Long.parseLong(leftString);
+					long rightnum = Long.parseLong(rightString);
 					if( leftnum <= rightnum)
 						{
 						return "true";

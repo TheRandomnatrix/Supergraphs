@@ -1,0 +1,6 @@
+Get user input then check node data to see if it equals
+~ff Input Files\\NodeData2.txt
+~ui userinput
+~g-an
+~q-n ##userinput == ::d1
+~pr-r

@@ -20,7 +20,7 @@ public class Supergraph
 	private HashMap<String,ArrayList<String>> SavedQueryResults; //holds lists of names of nodes for loading/unloading from files
 	private HashMap<String,ArrayList<String>> SavedComputationResults; //holds lists of names of nodes for loading/unloading from files
 	private String lastresult;
-	private static final String SetTag = "##";
+	private static final String ComputedSetTag = "##";
 	//private ArrayList<Graph> queryResults;
 	Supergraph() //constructor
 		{
@@ -54,7 +54,7 @@ public class Supergraph
 					str += " ";
 					}
 				}
-			q = q.replaceAll(SetTag+dataList[i],str);
+			q = q.replaceAll(ComputedSetTag+dataList[i],str);
 			}
 		return q;
 		}
@@ -85,12 +85,12 @@ public class Supergraph
 		s = s.replace("~q-p","~pathquery");
 		s = s.replace("~run","~runfromfile");
 		s = s.replace("~l-r","~loadresults"); 
-		s = s.replace("~l-sff","~loadsetfromfile");
+		s = s.replace("~l-sff","~loaddatasetfromfile");
 		s = s.replace("~l-rff","~loadresultsfromfile");
-		s = s.replace("~li-s","~listsets");
-		s = s.replace("~ev-s","~evaluateset");
-		s = s.replace("~s-s","~saveset");
-		s = s.replace("~w-s","~writeset");
+		s = s.replace("~pr-ds","~printdatasets");
+		s = s.replace("~ev-ds","~evaluatedataset");
+		s = s.replace("~s-ds","~savedataset");
+		s = s.replace("~w-ds","~writedataset");
 		s = s.replace("~s-r","~saveresults");
 		s = s.replace("~w-g","~writegraph");
 		s = s.replace("~OMGPLSTOHALP","~help");
@@ -98,6 +98,8 @@ public class Supergraph
 		s = s.replace("~w-r","~writeresults");
 		s = s.replace("~j","~join");
 		s = s.replace("~ui","~getuserinput");
+		s = s.replace("~time","~gettimestamp");
+		
 		
 		//s = s.replace("/pr","/printresults");	
 		return s;
@@ -427,7 +429,7 @@ public class Supergraph
 				}
 			}
 			
-		if (command[0].equals("~evaluateset")) //Evaluates an expression, possibly using datasets, then places the result as a dataset
+		if (command[0].equals("~evaluatedataset")) //Evaluates an expression, possibly using datasets, then places the result as a dataset
 			{
 			if(command.length >= 2)
 				{
@@ -448,6 +450,28 @@ public class Supergraph
 				}
 			}
 			
+		if (command[0].equals("~gettimestamp")) //Runs through nodes from last query and computes the value of a given expression, and returns the results as a dataset
+			{
+			if(command.length == 1)
+				{
+				System.out.println("Getting timestamp:...");
+				long timestamp = new Date().getTime();		//get current time in milliseconds
+				ArrayList<String> templist = new ArrayList<String>(); //make a list for new data set
+				templist.add(String.valueOf(timestamp)); 		//add the timestamp to the list
+				SavedComputationResults.put(lastresult,templist);	//put the timestamp in as a dataset under last result
+				return true;
+				}
+			if(command.length == 2)
+				{
+				System.out.println("Getting timestamp:...");
+				long timestamp = new Date().getTime();		//get current time in milliseconds
+				ArrayList<String> templist = new ArrayList<String>(); //make a list for new data set
+				templist.add(String.valueOf(timestamp)); 		//add the timestamp to the list
+				SavedComputationResults.put(command[1],templist);	//put the timestamp in as a dataset under specified name
+				return true;
+				}
+			return false;
+			}	
 		if (command[0].equals("~nodequery")) //runs a nodequery on the initial graph and saves result to memory.
 			{
 			System.out.println("Running node query:...");
@@ -458,13 +482,16 @@ public class Supergraph
 			}		
 		if (command[0].equals("~connectionquery")) //runs a nodequery on the initial graph and saves result to memory.
 			{
-			System.out.println("Running connection query:...");
-			String commandlength = command[0] + " " + command[1] + " ";
-			String query = 	commandinput.substring(commandlength.length());
-			query = filterQuerySets(query); //inject sets into query
-			SavedQueryResults.put(lastresult,graph.getNodeNames(graph.runConnectionQuery(lastqueryresults,query,command[1])));
-			//graph.runConnectionQuery(query);
-			return true;
+			if(command.length >= 2)
+				{
+				System.out.println("Running connection query:...");
+				String commandlength = command[0] + " " + command[1] + " ";
+				String query = 	commandinput.substring(commandlength.length());
+				query = filterQuerySets(query); //inject sets into query
+				SavedQueryResults.put(lastresult,graph.getNodeNames(graph.runConnectionQuery(lastqueryresults,query,command[1])));
+				//graph.runConnectionQuery(query);
+				return true;
+				}
 			}		
 		if (command[0].equals("~writegraph")) //runs a nodequery on the initial graph and saves result to memory.
 			{
@@ -496,7 +523,7 @@ public class Supergraph
 				}
 			}
 			
-		if (command[0].equals("~listsets")) //prints all sets of data and their contained values
+		if (command[0].equals("~printdatasets")) //prints all sets of data and their contained values
 			{
 			if(command.length == 1)
 				{
@@ -507,12 +534,17 @@ public class Supergraph
 					System.out.println(dataList[i] + ": "+SavedComputationResults.get(dataList[i]));
 					}
 				}
-			if(command.length > 1) //if a specific set/sets should be desired.
+			if(command.length == 2) //if a specific set/sets should be desired.
 				{
-					
+				ArrayList<String> set = SavedComputationResults.get(command[1]);
+					if(set != null)
+					{
+					System.out.print(set);
+					return true;
+					}
 				}
 			}
-		if (command[0].equals("~loadset")) //loads specified results list into lastresult
+		if (command[0].equals("~loaddataset")) //loads specified results list into lastresult
 			{
 			if(command.length == 2)
 				{
@@ -527,7 +559,7 @@ public class Supergraph
 				}
 			}
 		try	{
-			if (command[0].equals("~loadsetfromfile"))	//Create graph from file
+			if (command[0].equals("~loaddatasetfromfile"))	//Create graph from file
 				{
 				if(command.length > 2)
 					{
@@ -542,7 +574,9 @@ public class Supergraph
 			}
 		catch (FileNotFoundException e)
 		{return false;}
-		if (command[0].equals("~saveset")) //runs a nodequery on the initial graph and saves result to memory.
+		
+		
+		if (command[0].equals("~savedataset")) //saves dataset from lastresult into specified dataset
 			{
 			if(command.length == 2)
 				{
@@ -551,8 +585,19 @@ public class Supergraph
 				return true;
 				}
 			}	
-		
-		if (command[0].equals("~writeset"))	//writes specified set to a file
+		if (command[0].equals("~printdataset"))	//prints set
+			{
+			if(command.length > 2)
+				{
+				ArrayList<String> set = SavedComputationResults.get(command[1]);
+					if(set != null)
+					{
+					System.out.print(set);
+					return true;
+					}
+				}
+			}	
+		if (command[0].equals("~writedataset"))	//writes specified set to a file
 			{
 			if(command.length > 2)
 				{

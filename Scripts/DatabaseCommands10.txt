@@ -1,6 +1,34 @@
-Get user input then check node data to see if it equals
-~ff Input Files\\NodeData2.txt
-~ui userinput
+~time t1
+~ftf Input Files\\CiaphasCaneEdited.txt
 ~g-an
-~q-n ##userinput == ::d1
-~pr-r
+~q-n ( ::name == i ) || ( ::name == they )
+~q-c right ::verb == after
+~s-r verbs1
+~g-an
+~q-n ( ::name == he ) || ( ::name == she )
+~q-c right ::verb == after
+~s-r verbs2
+~j inner verbs1 verbs2 verbs
+~w-r verbs Results\\Verbs.txt
+
+~l-r verbs
+~q-c right ::verb == before
+~s-r verbs3
+~j inner verbs verbs3 verbs4
+~l-r verbs4
+
+~g-an
+~q-n ( ::name == his ) || ( ::name == her ) || ( ::name == your ) || ( ::name == their )
+~q-c right ::verb == after
+~s-r nouns
+~w-r nouns Results\\nouns.txt
+
+~q-c right ::verb == before
+~s-r beforenoun
+~j left nouns beforenoun adjectives
+~w-r adjectives Results\\adjectives.txt
+
+~time t2
+~ev-ds ##t2 - ##t1
+~pr-ds
+
