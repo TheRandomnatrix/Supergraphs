@@ -6,12 +6,15 @@
 	Tell all nodes to be children of Node6
 ~a-dg Name6
 ~a-dg Name5
+~pr-r
 
 ~g-an
 ~q-n ( ::name == Name6 ) || ( ::name == Name5 )
 	Tell all nodes to be children of Node6
 ~a-dg Name7
 
+~pr-r
+	Print the network before inheritence
 ~pr-n
 ~g-an
 ~i-dg

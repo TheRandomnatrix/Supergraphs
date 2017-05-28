@@ -13,7 +13,7 @@ public class Node
 	//Maintains a variablename:variablevalue data mapping
 	private HashMap<String,String> NodeData;
 	
-	private HashSet<String> DataGroups;	//list of names of nodes that this node belongs to
+	private LinkedHashSet<String> DataGroups;	//list of names of nodes that this node belongs to
 	
 	
 	Node(String name,Graph parentGraph) //constructor
@@ -23,7 +23,7 @@ public class Node
 		this.Name = name; 
 		this.parentGraph = parentGraph;
 		NodeData = new HashMap<String,String>();
-		this.DataGroups = new HashSet<String>();
+		this.DataGroups = new LinkedHashSet<String>();
 		}
 
 	public String getName()
@@ -39,51 +39,72 @@ public class Node
 
 	public void inheritData()  //returns node data from inherited nodes. Will recursively run through things
 		{
-		this.NodeData = (HashMap<String,String>)getNodeDataInherited(0).clone();
+		this.NodeData = (HashMap<String,String>)getNodeDataInherited().clone();
 		}
 		
-	public HashMap<String,String> getNodeDataInherited(int depth)  //returns node data from inherited nodes. Will recursively run through things
+	public HashMap<String,String> getNodeDataInherited()  //returns node data from inherited nodes. Will recursively run through things
 		{
-		//print the depth and current node
-		for (int b = 0; b < depth; b++)
-			System.out.print("	");
-		System.out.println("current node: "+this.getName());	//print the name of the node
-			
-
 		HashMap<String,String> ReturnData = new HashMap<String,String>();	// this.NodeData.clone();
-		if(!DataGroups.isEmpty())
+		ArrayList<Node> Ancestors = getNodeAncestors();	//get ordered list of ancestors, with older nodes coming first
+		//System.out.println("current node: "+this.getName() + "	"+Ancestors);	//print the name of the node
+		
+		LinkedHashSet<Node> UniqueAncestors = new LinkedHashSet<Node>();
+			
+		for (int i = 0; i < Ancestors.size(); i++)	//get unique ancestors while preserving order
+			{
+			UniqueAncestors.add(Ancestors.get(i));
+			}
+			
+		Iterator<Node> iterator = UniqueAncestors.iterator();
+		while (iterator.hasNext()) 	//iterate over the ordered set of ancestors, writing data to the node and updating it with new info
+			{
+			Node node = iterator.next();
+			String[] dataList = node.getNodeData().keySet().toArray(new String[0]); //returns list of variables in the node		
+			for(int k = 0; k < dataList.length; k++) //iterate through inherited data
+				{
+				ReturnData.put(dataList[k],node.getNodeDataValue(dataList[k]));	//put the inherited data in. Newer data overwrites older data
+				}		
+			}
+		
+		return ReturnData;
+		}
+	
+	public ArrayList<Node> getNodeAncestors()  //returns a preorder sorted list of all ancestors from "oldest" to "newest". This list will include the calling node at the end
+		{
+		return getNodeAncestors(new LinkedHashSet<Node>());
+		}
+		
+	public ArrayList<Node> getNodeAncestors(LinkedHashSet<Node> Predecessors)  //returns a preorder sorted list of all ancestors from "oldest" to "newest". This list will include the calling node at the end
+		{
+		//Return list. Includes the names of all ancestors
+		ArrayList<Node> Ancestors = new ArrayList<Node>();
+
+		if(!DataGroups.isEmpty()) //run through all ancestors of calling node and recursively get their names
 			{
 			String[] namesList = DataGroups.toArray(new String[0]);		//get the list of groups
-			//System.out.println("	parents: "+namesList);
-				
 			for(int i = 0; i <namesList.length; i++) 	//iterate through all groups
 				{
 				Node node = parentGraph.getNode(namesList[i]);
 				if(node != null)
 					{
-					HashMap<String,String> InheritedData = node.getNodeDataInherited(depth+1);	//get 
-					String[] dataList = InheritedData.keySet().toArray(new String[0]); //returns list of variables in the node
-						
-					for(int k = 0; k < dataList.length; k++) //iterate through inherited data
+					if (!Predecessors.contains(node))
 						{
-						ReturnData.put(dataList[k],node.getNodeDataValue(dataList[k]));	//put the inherited data in
+						LinkedHashSet<Node> updatedPredecessors = Predecessors;
+						updatedPredecessors.add(this);
+						Ancestors.addAll(0,node.getNodeAncestors(updatedPredecessors)); //append the ancestor's ancestors to start of list
+						}
+					else
+						{
+						System.out.println("ERROR: LOOP DETECTED BETWEEN " + this.Name + " AND " + node.getName());
 						}
 					}
 				}
-				
-			String[] dataList = this.getNodeData().keySet().toArray(new String[0]); //returns list of variables in the node
-			for(int i = 0; i < dataList.length; i++) //iterate through current data
-				{
-				ReturnData.put(dataList[i],this.getNodeDataValue(dataList[i]));
-				}
 			}
-		else
-			{
-			return getNodeData(); //return ones own data
-			}
-		return ReturnData;
-		}
 	
+		Ancestors.add(this);	//add caller to the list
+		return Ancestors;
+		}
+		
 	public Boolean containsNodeData(String variablename) //checks to see if the node contains a specified variable
 		{
 			return NodeData.containsKey(variablename);
@@ -91,6 +112,7 @@ public class Node
 	
 	public void addDataGroup(String name) //adds a data group to the node
 		{
+		
 		if(!this.Name.equals(name)) //make sure the node is not directly a child of itself
 			{
 			this.DataGroups.add(name);
@@ -101,7 +123,7 @@ public class Node
 			}
 		}
 	
-	public HashSet<String> getDataGroups() //adds a data group
+	public LinkedHashSet<String> getDataGroups() //adds a data group
 		{
 		return this.DataGroups;
 		}

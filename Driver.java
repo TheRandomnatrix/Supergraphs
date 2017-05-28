@@ -50,6 +50,7 @@ public class Driver
 	//System.out.println(input);
 	input = sc.nextLine();
 	} */
+
 	
 	supergraph.runCommand("~run "+"Scripts\\DatabaseCommands10.txt",graph,false); //
 	

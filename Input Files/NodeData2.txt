@@ -5,7 +5,7 @@ Name3,d1,2
 Name4,d1,2
 Name5,d1,3
 Name6,d1,3,d2,4
-Name7,d1,5
+Name7,d1,5,d3,100
 Name8,d1,6
 Name9,d1,7
 Name1,Name2,1,g,Name3,1,g,Name6,100,g
