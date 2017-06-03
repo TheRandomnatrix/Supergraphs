@@ -107,12 +107,18 @@ public class Supergraph
 	
 	public void runCommandList(String input, Graph graph) throws FileNotFoundException
 		{
-		String[] commands= input.split("~");
-		boolean chained = false;
-		for(int i = 0; i < commands.length; i++)
+		if (input.length() > 0)
 			{
-			runCommand("~"+commands[i],graph,chained);
-			chained = true;
+			if (input.charAt(0) == '~')
+				{
+				String[] commands= input.split("~");
+				boolean chained = false;
+				for(int i = 0; i < commands.length; i++)
+					{
+					runCommand("~"+commands[i],graph,chained);
+					chained = true;
+					}
+				}
 			}
 		}
 		
@@ -234,8 +240,25 @@ public class Supergraph
 				String Name1 = 	command[1];
 				System.out.println("Adding group data...");
 				Node groupnode = graph.getNode(Name1);
-				graph.addDataGroup(lastqueryresults,groupnode);
-				return true;
+				if(groupnode != null)
+					{
+					graph.addDataGroup(lastqueryresults,groupnode);
+					return true;
+					}
+				}
+			}
+		if (command[0].equals("~removedatagroup")) //addTraffic Name1 Name2 traffic verb
+			{
+			if(command.length == 2)
+				{
+				String Name1 = 	command[1];
+				System.out.println("Adding group data...");
+				Node groupnode = graph.getNode(Name1);
+				if(groupnode != null)
+					{
+					graph.removeDataGroup(lastqueryresults,groupnode);
+					return true;
+					}
 				}
 			}
 		if (command[0].equals("~inheritdatagroup")) //addTraffic Name1 Name2 traffic verb
@@ -422,15 +445,15 @@ public class Supergraph
 					}
 				}
 			}
-		if (command[0].equals("~computenodedata")) //Runs through nodes from last query and computes the value of a given expression, putting the result into each node
+		if (command[0].equals("~computenodedata")) //Runs through nodes from last query and computes the value of a given expression, putting the result into each node under specified variable
 			{
 			if(command.length >= 3)
 				{
 				String commandlength = command[0] + " " + command[1] + " ";
-				String query = 	commandinput.substring(commandlength.length());
-				System.out.println("Setting node data to: "+ command[1] + " = " + query +":...");
-				query = filterQuerySets(query); //inject sets into query
-				graph.runNodeComputation(lastqueryresults,command[1],query);
+				String expression = 	commandinput.substring(commandlength.length());
+				System.out.println("Setting node data to: "+ command[1] + " = " + expression +":...");
+				expression = filterQuerySets(expression); //inject sets into query
+				graph.runNodeComputation(lastqueryresults,command[1],expression);
 				
 				return true;
 				}
@@ -440,11 +463,11 @@ public class Supergraph
 			if(command.length >= 2)
 				{
 				String commandlength = command[0] + " ";
-				String query = 	commandinput.substring(commandlength.length());
-				query = filterQuerySets(query); //inject sets into query
-				System.out.println("Computing data set" + " = " + query +":...");
+				String expression = 	commandinput.substring(commandlength.length());
+				expression = filterQuerySets(expression); //inject sets into query
+				System.out.println("Computing data set" + " = " + expression +":...");
 				//System.out.println(graph.computeDataSet(lastqueryresults,query));
-				SavedComputationResults.put(lastresult,graph.computeDataSet(lastqueryresults,query));
+				SavedComputationResults.put(lastresult,graph.computeDataSet(lastqueryresults,expression));
 				
 				return true;
 				}

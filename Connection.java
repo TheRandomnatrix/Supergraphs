@@ -8,25 +8,28 @@ public class Connection
 {
 	private Node leftNode;
 	private Node rightNode;
+	private String leftName;
+	private String rightName;
+	private Graph parentGraph;
 	private int traffic;
 	private String verb;
-	
-	
-	Connection(Node leftnode,Node rightnode,int traffic,String verb) //constructor
+		
+	Connection(Graph graph, String leftnode,String rightnode,int traffic,String verb) //constructor
 		{
-		this.leftNode = leftnode;
-		this.rightNode = rightnode;
+		this.parentGraph = graph;
+		this.leftName = leftnode;
+		this.rightName = rightnode;
 		this.traffic = traffic;
 		this.verb = verb;
 		}
 	
 	public Node getleftNode()
 		{
-		return this.leftNode;
+		return parentGraph.getNode(this.leftName);
 		}
 	public Node getrightNode()
 		{
-		return this.rightNode;
+		return parentGraph.getNode(this.rightName);
 		}	
 	public int getTraffic()
 		{

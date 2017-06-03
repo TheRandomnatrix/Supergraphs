@@ -167,13 +167,13 @@ public class Node
 			{
 			ArrayList<Connection> newConnectionList = new ArrayList<Connection>(); //create new list of connections
 			ConnectionList.put(node,newConnectionList);	//map the new empty list to the node
-			newConnectionList.add(new Connection(this,node,traffic,verb)); //add a new connection to the list
+			newConnectionList.add(new Connection(parentGraph,this.Name,node.getName(),traffic,verb)); //add a new connection to the list
 			}
 		else
 			{
 			if(nodeverbSearch(node, verb) == null)	//check if a duplicate connection to the node with the same verb doesn't exist
 				{
-				ConnectionList.get(node).add(new Connection(this,node,traffic,verb)); //create a new connection and add it to existing connection list for specified node
+				ConnectionList.get(node).add(new Connection(parentGraph,this.Name,node.getName(),traffic,verb)); //create a new connection and add it to existing connection list for specified node
 				}
 			}
 		}

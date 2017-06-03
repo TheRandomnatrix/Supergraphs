@@ -52,7 +52,8 @@ public class Driver
 	} */
 
 	
-	supergraph.runCommand("~run "+"Scripts\\DatabaseCommands10.txt",graph,false); //
+	//supergraph.runCommand("~run "+"Scripts\\DatabaseCommands10.txt",graph,false); //
+	supergraph.runCommand("~run "+"Scripts\\WordMining.txt",graph,false); //
 	
 	/*supergraph.runCommand("/fromfile "+datafilename,graph);
 	//supergraph.runCommand("/pr-n",graph);

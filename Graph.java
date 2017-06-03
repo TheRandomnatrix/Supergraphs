@@ -7,7 +7,7 @@ import java.io.*;
 
 public class Graph
 {
-	private HashMap<String,Node> NametoNode;
+	private HashMap<String,Node> NametoNode; //mapping node names to pointers
 	private String Name = "";
 	//private boolean clearedQuery; //false if the query should continue off of an old query result
 	//private ArrayList<Node> queryResults;
@@ -247,15 +247,6 @@ public class Graph
 			}
 		}
 	
-	public void inheritDataGroup(ArrayList<Node> nodeslist) //makes all nodes fully inherit the data from their parents
-		{
-		for(int i=0; i < nodeslist.size(); i++)
-			{
-			Node node = nodeslist.get(i);
-			node.inheritData(); //adds connections from node to all nodes in list
-			}
-		}	
-		
 	public void addDataGroup(ArrayList<Node> nodeslist,Node node) //adds specified group to list
 		{
 		if (node != null) //makes sure node isn't null
@@ -265,6 +256,28 @@ public class Graph
 				{
 				Node output = nodeslist.get(i);
 				output.addDataGroup(name); 
+				}
+			}
+		}	
+		
+	public void inheritDataGroup(ArrayList<Node> nodeslist) //makes all nodes fully inherit the data from their parents
+		{
+		for(int i=0; i < nodeslist.size(); i++)
+			{
+			Node node = nodeslist.get(i);
+			node.inheritData(); //adds connections from node to all nodes in list
+			}
+		}	
+		
+	public void removeDataGroup(ArrayList<Node> nodeslist,Node node) //adds specified group to list
+		{
+		if (node != null) //makes sure node isn't null
+			{
+			String name =	node.getName();
+			for(int i=0; i < nodeslist.size(); i++)
+				{
+				Node output = nodeslist.get(i);
+				output.removeDataGroup(name); 
 				}
 			}
 		}

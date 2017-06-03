@@ -1,0 +1,107 @@
+~ftf Input Files\\CiaphasCaneEdited.txt
+
+~g-an
+~q-n ( ::name == i )
+~q-c right ::verb == after
+~cu-nd verbvalue ( ::verbvalue + 1 )
+~a-nd verbvalue 1 f
+
+~g-an
+~q-n ( ::name == they )
+~q-c right ::verb == after
+~cu-nd verbvalue ( ::verbvalue + 1 )
+~a-nd verbvalue 1 f
+
+~g-an
+~q-n ( ::name == he )
+~q-c right ::verb == after
+~cu-nd verbvalue ( ::verbvalue + 1 )
+~a-nd verbvalue 1 f
+
+~g-an
+~q-n ( ::name == she )
+~q-c right ::verb == after
+~cu-nd verbvalue ( ::verbvalue + 1 )
+~a-nd verbvalue 1 f
+
+~g-an
+~q-n ( ::name == to )
+~q-c right ::verb == after
+~cu-nd verbvalue ( ::verbvalue + 1 )
+~a-nd verbvalue 1 f
+
+~g-an
+~q-n ( ::name == you )
+~q-c right ::verb == after
+~cu-nd verbvalue ( ::verbvalue + 1 )
+~a-nd verbvalue 1 f
+
+~g-an
+~q-n ( ::name == we )
+~q-c right ::verb == after
+~cu-nd verbvalue ( ::verbvalue + 1 )
+~a-nd verbvalue 1 f
+
+~g-an
+~q-n ( ::name == him )
+~q-c right ::verb == before
+~cu-nd verbvalue ( ::verbvalue + 1 )
+~a-nd verbvalue 1 f
+
+~g-an
+~q-n ( ::name == her )
+~q-c right ::verb == before
+~cu-nd verbvalue ( ::verbvalue + 1 )
+~a-nd verbvalue 1 f
+
+~g-an
+~q-n ( ::verbvalue >= 3 )
+/~pr-r
+~s-r verbs
+~w-r verbs Results\\Verbs.txt
+
+~g-an
+~q-n ( ::verbvalue >= 2 )
+~q-c right ::verb == before
+~s-r leftverbs
+~j inner leftverbs verbs adverbs
+~w-r adverbs Results\\Adverbs.txt
+
+
+
+1~l-r verbs
+1~q-c right ::verb == before
+1~s-r verbs3
+1~j inner verbs verbs3 verbs4
+1~l-r verbs4
+
+1~g-an
+1~q-n ( ::name == his ) || ( ::name == her ) || ( ::name == your ) || ( ::name == their )
+1~q-c right ::verb == after
+1~s-r nouns
+1~w-r nouns Results\\nouns.txt
+
+1~g-an
+1~q-n ( ::name == to )
+1~q-c right ::verb == after
+1~pr-r
+
+~g-an
+~q-n ( ::name == . )
+~q-c right ::verb == after
+~pr-r
+
+1~g-an
+1~q-n ( ::name == is ) || ( ::name == are )
+1~q-c right ::verb == before
+1~pr-r
+
+~g-an
+~q-n ( ::name == an ) || ( ::name == a ) || ( ::name == the ) || ( ::name == that ) || ( ::name == those )
+~q-c right ::verb == after
+~s-r words1
+1~q-c right ::verb == after
+1~s-r words2
+1~j inner words1 words2 adj
+~w-r words1 Results\\adjectives.txt
+

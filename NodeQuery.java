@@ -20,7 +20,7 @@ public class NodeQuery extends Query
 			q = q.replaceAll((variabletag+"ConnectionCount"),String.valueOf(node.getAllConnections().size())); //gets count of outbound connections
 			}
 			
-		String[] dataList = node.getNodeData().keySet().toArray(new String[0]); //returns list of variables in the node
+		String[] dataList = node.getNodeDataInherited().keySet().toArray(new String[0]); //returns list of variables in the node
 		for(int i = 0; i < dataList.length; i++) //iterate through query, replacing all variables with their actual value if it exists
 			{
 			q = q.replaceAll(variabletag+dataList[i],node.getNodeDataValue(dataList[i]));
